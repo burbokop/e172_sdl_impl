@@ -2,7 +2,7 @@
 #include "spm.h"
 
 
-#include <src/sdlimplementation/effects/anaglyph.h>
+#include <src/effects/anaglyph.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <src/math/math.h>

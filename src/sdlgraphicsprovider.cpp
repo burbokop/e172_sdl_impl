@@ -12,21 +12,10 @@ SDLGraphicsProvider::~SDLGraphicsProvider() {
     delete m_renderer;
 }
 
-e172::AbstractRenderer *SDLGraphicsProvider::renderer() const {
-    return m_renderer;
-}
-
-bool SDLGraphicsProvider::isValid() const {
-    return true;
-}
-
-e172::Image SDLGraphicsProvider::loadImage(const std::string &path) const {
-    SDL_Surface *surface = IMG_Load(path.c_str());
-
+e172::Image SDLGraphicsProvider::__createSDLImage(SDL_Surface *surface) const {
     if(surface) {
         return __createImage(new e172::Image::handle<SDL_Surface*>(surface), this, surface->w, surface->h, [](e172::Image::data_ptr d) {
             const auto handle = e172::Image::handle_cast<SDL_Surface*>(d);
-
             SDL_FreeSurface(handle->c);
             delete handle;
         }, [](e172::Image::data_ptr ptr) -> e172::Image::ptr {
@@ -42,9 +31,37 @@ e172::Image SDLGraphicsProvider::loadImage(const std::string &path) const {
     return e172::Image();
 }
 
+e172::AbstractRenderer *SDLGraphicsProvider::renderer() const {
+    return m_renderer;
+}
+
+bool SDLGraphicsProvider::isValid() const {
+    return true;
+}
+
+e172::Image SDLGraphicsProvider::loadImage(const std::string &path) const {
+    return __createSDLImage(IMG_Load(path.c_str()));
+}
+
 e172::Image SDLGraphicsProvider::createImage(int width, int height) const {
-    (void)width;
-    (void)height;
+    return __createSDLImage(SDL_CreateRGBSurface(0, width, height, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000));
+}
+
+e172::Image SDLGraphicsProvider::createImage(int width, int height, const e172::AbstractGraphicsProvider::ImageInitFunction &imageInitFunction) const {
+    SDL_Surface* surface = SDL_CreateRGBSurface(0, width, height, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+    if(surface) {
+        imageInitFunction(reinterpret_cast<uint32_t*>(surface->pixels));
+        return __createSDLImage(surface);
+    }
+    return e172::Image();
+}
+
+e172::Image SDLGraphicsProvider::createImage(int width, int height, const e172::AbstractGraphicsProvider::ImageInitFunctionExt &imageInitFunction) const {
+    SDL_Surface* surface = SDL_CreateRGBSurface(0, width, height, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+    if(surface) {
+        imageInitFunction(width, height, reinterpret_cast<uint32_t*>(surface->pixels));
+        return __createSDLImage(surface);
+    }
     return e172::Image();
 }
 

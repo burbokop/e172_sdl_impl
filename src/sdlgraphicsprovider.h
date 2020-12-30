@@ -15,7 +15,7 @@ public:
     SDLGraphicsProvider(const std::vector<std::string> &args, const char *title, int x, int y);
     ~SDLGraphicsProvider() override;
 
-    e172::Image __createSDLImage(SDL_Surface *surface) const;
+    e172::Image imageFromSDLSurface(SDL_Surface *surface) const;
 
     // AbstractGraphicsProvider interface
 public:
@@ -28,6 +28,12 @@ public:
 
     virtual void loadFont(const std::string &name, const std::string &path) override;
 
+protected:
+    virtual void destructImage(e172::SharedContainer::data_ptr ptr) const override;
+    virtual e172::SharedContainer::ptr imageBitMap(e172::SharedContainer::data_ptr ptr) const override;
+    virtual e172::SharedContainer::data_ptr imageFragment(e172::SharedContainer::data_ptr ptr, int x, int y, int &w, int &h) const override;
+    virtual e172::SharedContainer::data_ptr transformImage(e172::SharedContainer::data_ptr ptr, uint64_t) const override;
+    virtual bool saveImage(e172::SharedContainer::data_ptr ptr, const std::string &path) const override;
 };
 
 

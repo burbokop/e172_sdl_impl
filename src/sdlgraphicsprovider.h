@@ -33,7 +33,8 @@ protected:
     virtual e172::SharedContainer::ptr imageBitMap(e172::SharedContainer::data_ptr ptr) const override;
     virtual e172::SharedContainer::data_ptr imageFragment(e172::SharedContainer::data_ptr ptr, int x, int y, int &w, int &h) const override;
     virtual e172::SharedContainer::data_ptr transformImage(e172::SharedContainer::data_ptr ptr, uint64_t) const override;
-    virtual bool saveImage(e172::SharedContainer::data_ptr ptr, const std::string &path) const override;
+    virtual bool saveImage(e172::SharedContainer::data_ptr ptr, const std::string &path) const override;    
+    virtual e172::SharedContainer::data_ptr blitImages(e172::SharedContainer::data_ptr ptr0, e172::SharedContainer::data_ptr ptr1, int x, int y, int &w, int &h) const override;
 };
 
 

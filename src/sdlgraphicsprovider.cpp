@@ -82,3 +82,22 @@ e172::SharedContainer::data_ptr SDLGraphicsProvider::transformImage(e172::Shared
 bool SDLGraphicsProvider::saveImage(e172::SharedContainer::data_ptr ptr, const std::string & path) const {
     return 0 == IMG_SavePNG(e172::Image::handle_cast<SDL_Surface*>(ptr)->c, path.c_str());
 }
+
+e172::SharedContainer::data_ptr SDLGraphicsProvider::blitImages(e172::SharedContainer::data_ptr ptr0, e172::SharedContainer::data_ptr ptr1, int x, int y, int &w, int &h) const {
+    const auto handle0 = e172::Image::handle_cast<SDL_Surface*>(ptr0);
+    const auto handle1 = e172::Image::handle_cast<SDL_Surface*>(ptr1);
+
+    const auto result = SPM::CopySurface(handle0->c);
+    if(!result)
+        return nullptr;
+
+    SDL_Rect resultRect;
+    resultRect.x = x;
+    resultRect.y = y;
+    SDL_BlitSurface(handle1->c, nullptr, result, &resultRect);
+
+    w = result->w;
+    h = result->h;
+
+    return new e172::Image::handle<SDL_Surface*>(result);
+}

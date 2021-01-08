@@ -57,6 +57,10 @@ void SDLGraphicsProvider::loadFont(const std::string &name, const std::string &p
     m_renderer->m_fonts[name] = SDLRenderer::Font { path, std::map<int, TTF_Font*>() };
 }
 
+bool SDLGraphicsProvider::fontLoaded(const std::string &name) const {
+    return m_renderer->m_fonts.find(name) != m_renderer->m_fonts.end();
+}
+
 void SDLGraphicsProvider::destructImage(e172::SharedContainer::data_ptr ptr) const {
     const auto handle = e172::Image::handle_cast<SDL_Surface*>(ptr);
     SDL_FreeSurface(handle->c);

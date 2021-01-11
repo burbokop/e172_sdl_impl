@@ -292,6 +292,10 @@ e172::Vector SDLRenderer::drawString(const std::string &string, const e172::Vect
     return e172::Vector();
 }
 
+e172::Color *SDLRenderer::bitmap() const {
+    return static_cast<e172::Color*>(surface->pixels);
+}
+
 bool SDLRenderer::update() {
     while (m_lensQueue.size() > 0) {
         const auto l = m_lensQueue.front();

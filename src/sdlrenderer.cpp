@@ -6,6 +6,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <src/math/math.h>
+#include <src/debug.h>
 
 const int SDLRenderer::DefaultFontSize = 20;
 
@@ -269,7 +270,6 @@ e172::Vector SDLRenderer::drawString(const std::string &string, const e172::Vect
             f = TTF_OpenFont(font->second.path.c_str(), expectedSize);
             font->second.sizes[expectedSize] = f;
         }
-
 
         VisualEffect *effect = nullptr;
         if(anaglyphEnabled || anaglyphEnabled2)

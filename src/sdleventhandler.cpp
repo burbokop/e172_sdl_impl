@@ -9,13 +9,12 @@ SDLEventHandler::SDLEventHandler() {
     }
 }
 
-
 void SDLEventHandler::handleEvent(SDL_Event event) {
-
     if(event.type == SDL_KEYDOWN) {
         if(event.key.keysym.scancode < bufferSize) {
             m_holdedKeys[event.key.keysym.scancode] = true;
             m_singlePressedKeys[event.key.keysym.scancode] = true;
+            m_textBuffer.append(1, event.key.keysym.sym);
         }
     } else if(event.type == SDL_KEYUP) {
         if(event.key.keysym.scancode < bufferSize) {
@@ -60,4 +59,11 @@ void SDLEventHandler::update() {
 
 e172::Vector SDLEventHandler::mousePosition() const {
     return m_mousePosition;
+}
+
+
+std::string SDLEventHandler::pullText() {
+    auto result = m_textBuffer;
+    m_textBuffer.clear();
+    return result;
 }

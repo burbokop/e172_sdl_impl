@@ -12,6 +12,7 @@ class SDLEventHandler : public e172::AbstractEventHandler {
     bool m_singlePressedKeys[bufferSize];
     e172::Vector m_mousePosition;
     bool m_exitFlag = false;
+    std::string m_textBuffer;
 public:
     SDLEventHandler();
 
@@ -22,6 +23,7 @@ public:
     virtual bool keySinglePressed(e172::Scancode key) const override;
     virtual void update() override;
     virtual e172::Vector mousePosition() const override;
+    virtual std::string pullText() override;
 };
 
 #endif // SDLEVENTHANDLER_H

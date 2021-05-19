@@ -14,7 +14,14 @@ void SDLEventHandler::handleEvent(SDL_Event event) {
         if(event.key.keysym.scancode < bufferSize) {
             m_holdedKeys[event.key.keysym.scancode] = true;
             m_singlePressedKeys[event.key.keysym.scancode] = true;
-            m_textBuffer.append(1, event.key.keysym.sym);
+
+            if (event.key.keysym.scancode != SDL_SCANCODE_LSHIFT) {
+                if (m_holdedKeys[SDL_SCANCODE_LSHIFT]) {
+                    m_textBuffer.append(1, toUpperKeySym(event.key.keysym.sym));
+                } else {
+                    m_textBuffer.append(1, event.key.keysym.sym);
+                }
+            }
         }
     } else if(event.type == SDL_KEYUP) {
         if(event.key.keysym.scancode < bufferSize) {
@@ -24,6 +31,16 @@ void SDLEventHandler::handleEvent(SDL_Event event) {
         m_mousePosition = e172::Vector(event.motion.x, event.motion.y);
     } else if (event.type == SDL_QUIT) {
         m_exitFlag = true;
+    }
+}
+
+char SDLEventHandler::toUpperKeySym(char c) {
+    if(c == ',') {
+        return '<';
+    } else if(c == '.') {
+        return '>';
+    } else {
+        return toupper(c);
     }
 }
 

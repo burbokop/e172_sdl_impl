@@ -13,7 +13,10 @@ class SDLEventHandler : public e172::AbstractEventHandler {
     e172::Vector m_mousePosition;
     bool m_exitFlag = false;
     std::string m_textBuffer;
+
 public:
+    static char toUpperKeySym(char c);
+
     SDLEventHandler();
 
     // AbstractEventHandler interface

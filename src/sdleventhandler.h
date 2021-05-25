@@ -13,7 +13,7 @@ class SDLEventHandler : public e172::AbstractEventHandler {
     e172::Vector m_mousePosition;
     bool m_exitFlag = false;
     std::string m_textBuffer;
-
+    bool m_keyboardEnabled = true;
 public:
     static char toUpperKeySym(char c);
 
@@ -27,6 +27,8 @@ public:
     virtual void update() override;
     virtual e172::Vector mousePosition() const override;
     virtual std::string pullText() override;
+    virtual void enableKeyboard() override;
+    virtual void disableKeyboard() override;
 };
 
 #endif // SDLEVENTHANDLER_H

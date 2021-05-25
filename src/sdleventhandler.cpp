@@ -46,18 +46,22 @@ char SDLEventHandler::toUpperKeySym(char c) {
 
 
 bool SDLEventHandler::exitFlag() const {
-    return m_exitFlag;
+    if(m_keyboardEnabled) {
+        return m_exitFlag;
+    } else {
+        return false;
+    }
 }
 
 bool SDLEventHandler::keyHolded(e172::Scancode key) const {
-    if(key < bufferSize)
+    if(m_keyboardEnabled && key < bufferSize)
         return m_holdedKeys[key];
 
     return false;
 }
 
 bool SDLEventHandler::keySinglePressed(e172::Scancode key) const {
-    if(key < bufferSize)
+    if(m_keyboardEnabled && key < bufferSize)
         return m_singlePressedKeys[key];
 
     return false;
@@ -80,7 +84,19 @@ e172::Vector SDLEventHandler::mousePosition() const {
 
 
 std::string SDLEventHandler::pullText() {
-    auto result = m_textBuffer;
-    m_textBuffer.clear();
-    return result;
+    if(m_keyboardEnabled) {
+        auto result = m_textBuffer;
+        m_textBuffer.clear();
+        return result;
+    } else {
+        return std::string();
+    }
+}
+
+void SDLEventHandler::enableKeyboard() {
+    m_keyboardEnabled = true;
+}
+
+void SDLEventHandler::disableKeyboard() {
+    m_keyboardEnabled = false;
 }

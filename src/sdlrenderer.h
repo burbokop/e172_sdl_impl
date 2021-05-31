@@ -6,6 +6,7 @@
 
 #include <src/math/vector.h>
 #include <queue>
+#include <src/utility/priorityprocedure.h>
 
 struct SDL_Window;
 struct SDL_Surface;
@@ -49,17 +50,8 @@ private:
     std::queue<LensReciept> m_lensQueue;
     static void __applyLensEffect(SDL_Surface * surface, const e172::Vector point0, const e172::Vector point1, double coef);
 
-    class DrawTask {
-        int64_t m_depth = 0;
-        std::function<void()> m_taskFunction;
-    public:
-        DrawTask() {}
-        DrawTask(int64_t depth, const std::function<void()>& taskFunction);
-        void operator()() const;
-        bool operator<(const DrawTask& other) const;
-    };
 
-    std::priority_queue<DrawTask> m_taskQueue;
+    e172::PriorityProcedure::Queue m_drawQueue;
 public:
 
     virtual size_t presentEffectCount() const override;
@@ -70,7 +62,7 @@ public:
     void fill(uint32_t color) override;
     void drawPixel(const e172::Vector &point, uint32_t color) override;
     void drawLine(const e172::Vector &point0, const e172::Vector &point1, uint32_t color) override;
-    void drawRect(const e172::Vector &point0, const e172::Vector &point1, uint32_t color) override;
+    void drawRect(const e172::Vector &point0, const e172::Vector &point1, uint32_t color, const e172::ShapeFormat& format = e172::ShapeFormat(false)) override;
     void drawSquare(const e172::Vector &point, int radius, uint32_t color) override;
     void drawCircle(const e172::Vector &point, int radius, uint32_t color) override;
     void drawDiagonalGrid(const e172::Vector &point1, const e172::Vector &point2, int interval, uint32_t color) override;

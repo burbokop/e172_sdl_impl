@@ -15,6 +15,8 @@ class SDLRenderer : public e172::AbstractRenderer {
     friend class SDLGraphicsProvider;
 
     static inline auto sdl_initialized = false;
+
+    int64_t m_depth = 0;
 public:
     static const int DefaultFontSize;
 private:
@@ -46,6 +48,18 @@ private:
     };
     std::queue<LensReciept> m_lensQueue;
     static void __applyLensEffect(SDL_Surface * surface, const e172::Vector point0, const e172::Vector point1, double coef);
+
+    class DrawTask {
+        int64_t m_depth = 0;
+        std::function<void()> m_taskFunction;
+    public:
+        DrawTask() {}
+        DrawTask(int64_t depth, const std::function<void()>& taskFunction);
+        void operator()() const;
+        bool operator<(const DrawTask& other) const;
+    };
+
+    std::priority_queue<DrawTask> m_taskQueue;
 public:
 
     virtual size_t presentEffectCount() const override;
@@ -83,6 +97,10 @@ public:
 protected:
     virtual bool update() override;
 
+
+    // AbstractRenderer interface
+public:
+    virtual void setDepth(int64_t depth) override;
 };
 
 

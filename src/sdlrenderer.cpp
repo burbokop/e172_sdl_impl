@@ -228,7 +228,7 @@ void SDLRenderer::drawRect(const e172::Vector &point0, const e172::Vector &point
     m_drawQueue.push(m_depth, [this, point0, point1, color, format](){
         SDL_LockSurface(surface);
         if(format.fill()) {
-            SPM::FillArea(surface, point0.intX(), point0.intY(), point1.intX(), point1.intY(), color);
+            SPM::WithBlit(SPM::FillArea, surface, point0.intX(), point0.intY(), point1.intX(), point1.intY(), color);
         } else {
             SPM::Rect(surface, point0.intX(), point0.intY(), point1.intX(), point1.intY(), color);
         }
@@ -274,7 +274,7 @@ void SDLRenderer::drawImage(const e172::Image &image, const e172::Vector &pos, d
     });
 }
 
-e172::Vector SDLRenderer::drawString(const std::string &string, const e172::Vector &pos, uint32_t color, const e172::TextFormat &format) {    
+e172::Vector SDLRenderer::drawString(const std::string &string, const e172::Vector &pos, uint32_t color, const e172::TextFormat &format) {
     int expectedSize = DefaultFontSize;
     if(format.fontSize() > 0) {
         expectedSize = format.fontSize();
@@ -331,7 +331,7 @@ bool SDLRenderer::update() {
 }
 
 
-void SDLRenderer::applySmooth(const e172::Vector &point0, const e172::Vector &point1, double coefficient) {    
+void SDLRenderer::applySmooth(const e172::Vector &point0, const e172::Vector &point1, double coefficient) {
     uint32_t pix[point1.intY()-point0.intY()][point1.intX()-point0.intX()];
     for(int y = point0.intY(); y < point1.intY(); ++y) {
         for(int x = point0.intX(); x < point1.intX(); ++x) {

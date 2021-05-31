@@ -13,14 +13,27 @@
 
 class SPM {
 public:
+    template<typename ...Args>
+    static void WithBlit(void(*f)(SDL_Surface *, Args...), SDL_Surface *surface, Args... args) {
+        auto tmp = SDL_CreateRGBSurface(0, surface->w, surface->h, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+        SDL_LockSurface(tmp);
+        f(tmp, args...);
+        SDL_UnlockSurface(tmp);
+        SDL_UnlockSurface(surface);
+
+        SDL_BlitSurface(tmp, nullptr, surface, nullptr);
+        SDL_FreeSurface(tmp);
+    }
+
+
     static Uint32 ColorRGB(Uint8 R, Uint8 G, Uint8 B);
 
     static void FillPixel(SDL_Surface *surface, int x, int y, Uint32 color);
     static Uint32 GetPixel(SDL_Surface *surface, int x, int y);
 
-    static inline SDL_Surface *CreateARGB32Surface(int width, int height);
-    static inline SDL_Surface *CreateRGBA32Surface(int x, int y);
-    static inline SDL_Surface *CreateABGR32Surface(int x, int y);
+    static SDL_Surface *CreateARGB32Surface(int width, int height);
+    static SDL_Surface *CreateRGBA32Surface(int width, int height);
+    static SDL_Surface *CreateABGR32Surface(int width, int height);
 
     static void ApplyEffect(VisualEffect *effect);
     static void LockEffect(VisualEffect *effect);

@@ -3,14 +3,15 @@
 
 #include "rotozoom.h"
 
-
 Uint32 SPM::ColorRGB(Uint8 R, Uint8 G, Uint8 B) {
     return 65536 * R + 256 * G + B;
 }
 
 void SPM::FillPixel(SDL_Surface *surface, int x, int y, Uint32 color) {
     Uint32 *pixels = static_cast<Uint32*>(surface->pixels);
-    if (x >= 0 && y >= 0 && x < surface->w && y < surface->h) pixels[(y * surface->w) + x] = color;
+    if (x >= 0 && y >= 0 && x < surface->w && y < surface->h) {
+        pixels[(y * surface->w) + x] = color;
+    }
 }
 
 Uint32 SPM::GetPixel(SDL_Surface *surface, int x, int y) {
@@ -298,7 +299,7 @@ void SPM::BlitRotatedSurface(SDL_Surface *surface, SDL_Surface *screen_surface, 
 
     SDL_BlitSurface(ets, nullptr, screen_surface, &rect);
     if(ets != temp_surface)
-    SDL_FreeSurface(ets);
+        SDL_FreeSurface(ets);
     SDL_FreeSurface(temp_surface);
 }
 
@@ -318,7 +319,7 @@ void SPM::BlendedText(SDL_Surface *surface, std::string text_line, TTF_Font *tex
 
     SDL_BlitSurface(ets, nullptr, surface, &text_rect);
     if(ets != text_surface)
-    SDL_FreeSurface(ets);
+        SDL_FreeSurface(ets);
     SDL_FreeSurface(text_surface);
 }
 

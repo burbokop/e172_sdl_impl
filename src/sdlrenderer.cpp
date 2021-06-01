@@ -281,7 +281,7 @@ e172::Vector SDLRenderer::drawString(const std::string &string, const e172::Vect
     }
 
     const auto font = m_fonts.find(format.font());
-    if(font != m_fonts.end()) {
+    if(font != m_fonts.end()) {    
         TTF_Font *f = nullptr;
         const auto s = font->second.sizes.find(expectedSize);
         if(s != font->second.sizes.end()) {

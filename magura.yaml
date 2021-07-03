@@ -1,0 +1,7 @@
+connector: "cmake"
+
+dependencies:
+  - 'libsdl-org.SDL.main:configure'
+  - 'libsdl-org.SDL_ttf.main:configure'
+  - 'davidsiaw.SDL2_image.master:configure'
+  - 'SDL-mirror.SDL_mixer.master:configure'

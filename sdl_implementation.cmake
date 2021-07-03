@@ -19,10 +19,20 @@ add_library(sdl_impl SHARED
     ${CMAKE_CURRENT_LIST_DIR}/src/spm.h
     )
 
-target_link_libraries(sdl_impl
-    SDL2
-    SDL2_image
-    SDL2_ttf
-    SDL2_mixer
-    e172
-    )
+if($ENV{WITH_MAGURA})
+    find_package(magura REQUIRED)
+    target_connect_magura(app_using_spm)
+    target_link_libraries(sdl_impl
+        e172
+        )
+else($ENV{WITH_MAGURA})
+    target_link_libraries(sdl_impl
+        SDL2
+        SDL2_image
+        SDL2_ttf
+        SDL2_mixer
+        e172
+        )
+endif($ENV{WITH_MAGURA})
+
+

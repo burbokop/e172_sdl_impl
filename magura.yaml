@@ -3,5 +3,5 @@ connector: "cmake"
 dependencies:
   - 'libsdl-org.SDL.main:configure'
   - 'libsdl-org.SDL_ttf.main:configure'
-  - 'libsdl-org.SDL_image.master:configure'
+  - 'libsdl-org.SDL_image.main:configure'
   - 'libsdl-org.SDL_mixer.master:configure'

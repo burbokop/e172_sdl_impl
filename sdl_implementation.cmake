@@ -21,7 +21,7 @@ add_library(sdl_impl SHARED
 
 if($ENV{WITH_MAGURA})
     find_package(magura REQUIRED)
-    target_connect_magura(app_using_spm)
+    target_connect_magura(sdl_impl)
     target_link_libraries(sdl_impl
         e172
         )

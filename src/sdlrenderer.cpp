@@ -262,7 +262,7 @@ void SDLRenderer::drawDiagonalGrid(const e172::Vector &point1, const e172::Vecto
 
 void SDLRenderer::drawImage(const e172::Image &image, const e172::Vector &pos, double angle, double zoom) {
     m_drawQueue.push(m_depth, [this, image, pos, angle, zoom](){
-        if(imageId(image) == provider()) {
+        if(imageProvider(image) == provider()) {
             VisualEffect *effect = nullptr;
             if(anaglyphEnabled || anaglyphEnabled2)
                 effect = new Anaglyph(e172::Vector(2, 1));
@@ -288,7 +288,11 @@ e172::Vector SDLRenderer::drawString(const std::string &string, const e172::Vect
             f = s->second;
         } else {
             f = TTF_OpenFont(font->second.path.c_str(), expectedSize);
-            font->second.sizes[expectedSize] = f;
+            if(f) {
+                font->second.sizes[expectedSize] = f;
+            } else {
+                throw std::runtime_error("can not load font: " + font->second.path);
+            }
         }
 
         VisualEffect *effect = nullptr;

@@ -68,7 +68,8 @@ public:
     void drawDiagonalGrid(const e172::Vector &point1, const e172::Vector &point2, int interval, uint32_t color) override;
     void drawImage(const e172::Image &image, const e172::Vector &pos, double angle, double zoom) override;
     e172::Vector drawString(const std::string &string, const e172::Vector &pos, uint32_t color, const e172::TextFormat &format = e172::TextFormat()) override;
-    virtual e172::Color* bitmap() const override;
+
+    virtual void modify_bitmap(const std::function<void(e172::Color* bitmap)>& modifier) override;
 
     void enableEffect(uint64_t effect) override;
     void disableEffect(uint64_t effect) override;

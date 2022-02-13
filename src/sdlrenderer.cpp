@@ -317,8 +317,12 @@ e172::Vector SDLRenderer::drawString(const std::string &string, const e172::Vect
     return e172::Vector();
 }
 
-e172::Color *SDLRenderer::bitmap() const {
-    return static_cast<e172::Color*>(surface->pixels);
+void SDLRenderer::modify_bitmap(const std::function<void (e172::Color *)> &modifier) {
+    m_drawQueue.push(m_depth, [this, modifier](){
+        SDL_LockSurface(surface);
+        modifier(reinterpret_cast<e172::Color*>(surface->pixels));
+        SDL_UnlockSurface(surface);
+    });
 }
 
 bool SDLRenderer::update() {

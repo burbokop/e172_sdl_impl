@@ -13,8 +13,7 @@ public:
 
 // VisualEffect interface
 public:
-SDL_Surface *operator ()(SDL_Surface *input);
-
+    SDL_Surface *operator()(SDL_Surface *input);
 };
 
 #endif // ANAGLYPH_H

@@ -1,16 +1,36 @@
 #include "anaglyph.h"
 
+#include <cassert>
 
 SDL_Surface *separateChannel(SDL_Surface *origin, Uint32 mask) {
-    SDL_Surface* result = SDL_CreateRGBSurface(0, origin->w, origin->h, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+    assert(origin);
+    assert(origin->format);
+    assert(origin->format->Rmask == 0x00ff0000);
+    assert(origin->format->Gmask == 0x0000ff00);
+    assert(origin->format->Bmask == 0x000000ff);
+    assert(origin->format->Amask == 0xff000000);
+    assert(origin->format->BitsPerPixel == 32);
+    auto bytesPerPixel = 32 / 8;
+
+    SDL_Surface *result = SDL_CreateRGBSurface(0,
+                                               origin->w,
+                                               origin->h,
+                                               32,
+                                               0x00ff0000,
+                                               0x0000ff00,
+                                               0x000000ff,
+                                               0xff000000);
     SDL_SetSurfaceAlphaMod(result, (mask & 0xff000000) >> 24);
 
-    Uint32 *src_pixels = static_cast<Uint32*>(origin->pixels);
-    Uint32 *dst_pixels = static_cast<Uint32*>(result->pixels);
-
     SDL_LockSurface(result);
-    for(int i = 0, l = origin->w * origin->h; i < l; i++) {
-        dst_pixels[i] = (src_pixels[i] & (mask | 0xff000000));
+    const Uint32 *src_pixels = reinterpret_cast<const Uint32 *>(origin->pixels);
+    Uint32 *dst_pixels = reinterpret_cast<Uint32 *>(result->pixels);
+
+    for (int y = 0; y < origin->h; ++y) {
+        for (int x = 0; x < origin->w; ++x) {
+            dst_pixels[x + y * result->pitch / bytesPerPixel]
+                = (src_pixels[x + y * origin->pitch / bytesPerPixel] & (mask | 0xff000000));
+        }
     }
     SDL_UnlockSurface(result);
 

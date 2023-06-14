@@ -14,8 +14,8 @@ add_library(sdl_impl SHARED
     ${CMAKE_CURRENT_LIST_DIR}/src/rotozoom.h
     ${CMAKE_CURRENT_LIST_DIR}/src/sdlaudioprovider.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/sdlaudioprovider.h
-    ${CMAKE_CURRENT_LIST_DIR}/src/sdleventhandler.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/src/sdleventhandler.h
+    ${CMAKE_CURRENT_LIST_DIR}/src/sdleventprovider.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/src/sdleventprovider.h
     ${CMAKE_CURRENT_LIST_DIR}/src/sdlgraphicsprovider.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/sdlgraphicsprovider.h
     ${CMAKE_CURRENT_LIST_DIR}/src/sdlrenderer.cpp

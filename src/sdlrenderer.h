@@ -1,9 +1,7 @@
-#ifndef SDLRENDERER_H
-#define SDLRENDERER_H
+#pragma once
 
 #include <src/graphics/abstractrenderer.h>
 #include <map>
-
 #include <src/math/vector.h>
 #include <queue>
 #include <src/utility/priorityprocedure.h>
@@ -12,89 +10,108 @@ struct SDL_Window;
 struct SDL_Surface;
 struct _TTF_Font;
 typedef _TTF_Font TTF_Font;
+
 class SDLRenderer : public e172::AbstractRenderer {
     friend class SDLGraphicsProvider;
-
-    static inline auto sdl_initialized = false;
-
-    int64_t m_depth = 0;
 public:
     static const int DefaultFontSize;
-private:
-    Camera *camera = nullptr;
 
-    SDL_Window *window = nullptr;
-    SDL_Surface *surface = nullptr;
+    ~SDLRenderer();
 
-
-    struct Font {
-        typedef std::map<int, TTF_Font*> sizes_t;
-        std::string path;
-        sizes_t sizes;
-    };
-    std::map<std::string, Font> m_fonts;
-
-
-    bool m_lastFullscreen = false;
-    e172::Vector m_resolution;
-    bool anaglyphEnabled = false;
-    bool anaglyphEnabled2 = false;
-    SDLRenderer(const char *title, int x, int y);
-
-
-    struct LensReciept {
-        e172::Vector point0;
-        e172::Vector point1;
-        double coeficient;
-    };
-    std::queue<LensReciept> m_lensQueue;
-    static void __applyLensEffect(SDL_Surface * surface, const e172::Vector point0, const e172::Vector point1, double coef);
-
-
-    e172::PriorityProcedure::Queue m_drawQueue;
+    // AbstractRenderer interface
 public:
-
-    virtual size_t presentEffectCount() const override;
-    virtual std::string presentEffectName(size_t index) const override;
-    virtual void drawEffect(size_t index, const e172::VariantVector &args) override;
-
-
     void fill(uint32_t color) override;
-    void drawPixel(const e172::Vector &point, uint32_t color) override;
-    void drawLine(const e172::Vector &point0, const e172::Vector &point1, uint32_t color) override;
-    void drawRect(const e172::Vector &point0, const e172::Vector &point1, uint32_t color, const e172::ShapeFormat& format = e172::ShapeFormat(false)) override;
-    void drawSquare(const e172::Vector &point, int radius, uint32_t color) override;
-    void drawCircle(const e172::Vector &point, int radius, uint32_t color) override;
-    void drawDiagonalGrid(const e172::Vector &point1, const e172::Vector &point2, int interval, uint32_t color) override;
-    void drawImage(const e172::Image &image, const e172::Vector &pos, double angle, double zoom) override;
-    e172::Vector drawString(const std::string &string, const e172::Vector &pos, uint32_t color, const e172::TextFormat &format = e172::TextFormat()) override;
+    void drawPixel(const e172::Vector<double> &point, uint32_t color) override;
+    void drawLine(const e172::Vector<double> &point0,
+                  const e172::Vector<double> &point1,
+                  uint32_t color) override;
 
-    virtual void modify_bitmap(const std::function<void(e172::Color* bitmap)>& modifier) override;
+    void drawRect(const e172::Vector<double> &point0,
+                  const e172::Vector<double> &point1,
+                  uint32_t color,
+                  const e172::ShapeFormat &format = e172::ShapeFormat(false)) override;
+
+    void drawSquare(const e172::Vector<double> &point, int radius, uint32_t color) override;
+    void drawCircle(const e172::Vector<double> &point, int radius, uint32_t color) override;
+    void drawDiagonalGrid(const e172::Vector<double> &point1,
+                          const e172::Vector<double> &point2,
+                          int interval,
+                          uint32_t color) override;
+
+    void drawImage(const e172::Image &image,
+                   const e172::Vector<double> &pos,
+                   double angle,
+                   double zoom) override;
+
+    e172::Vector<double> drawString(const std::string &string,
+                                    const e172::Vector<double> &pos,
+                                    uint32_t color,
+                                    const e172::TextFormat &format = e172::TextFormat()) override;
+
+    void modifyBitmap(const std::function<void(e172::Color *bitmap)> &modifier) override;
 
     void enableEffect(uint64_t effect) override;
     void disableEffect(uint64_t effect) override;
 
-    e172::Vector resolution() const override;
-    void setResolution(e172::Vector value) override;
-    virtual void setFullscreen(bool value) override;
-    virtual e172::Vector screenSize() const override;
+    e172::Vector<double> resolution() const override { return m_resolution.into<double>(); }
+    void setResolution(e172::Vector<double> value) override;
 
-    ~SDLRenderer() override;
+    size_t presentEffectCount() const override;
+    std::string presentEffectName(size_t index) const override;
+    void drawEffect(size_t index, const e172::VariantVector &args) override;
 
-    // AbstractRenderer interface
-public:
-    virtual void applyLensEffect(const e172::Vector &point0, const e172::Vector &point1, double coefficient) override;
-    virtual void applySmooth(const e172::Vector &point0, const e172::Vector &point1, double coefficient) override;
+    void applyLensEffect(const e172::Vector<double> &point0,
+                         const e172::Vector<double> &point1,
+                         double coefficient) override;
+
+    void applySmooth(const e172::Vector<double> &point0,
+                     const e172::Vector<double> &point1,
+                     double coefficient) override;
+
+    void setDepth(int64_t depth) override;
+
+    void setFullscreen(bool value) override;
+    e172::Vector<double> screenSize() const override;
 
     // AbstractRenderer interface
 protected:
-    virtual bool update() override;
+    bool update() override;
 
+private:
+    struct LensReciept
+    {
+        e172::Vector<double> point0;
+        e172::Vector<double> point1;
+        double coeficient;
+    };
 
-    // AbstractRenderer interface
-public:
-    virtual void setDepth(int64_t depth) override;
+    struct Font
+    {
+        typedef std::map<int, TTF_Font *> sizes_t;
+        std::string path;
+        sizes_t sizes;
+    };
+
+private:
+    SDLRenderer(const std::string &title, const e172::Vector<std::uint32_t> &resolution);
+
+    static void applyLensEffect(SDL_Surface *surface,
+                                const e172::Vector<double> point0,
+                                const e172::Vector<double> point1,
+                                double coef);
+
+private:
+    static inline auto s_sdlInitialized = false;
+
+    int64_t m_depth = 0;
+    Camera *m_camera = nullptr;
+    SDL_Window *m_window = nullptr;
+    SDL_Surface *m_surface = nullptr;
+    std::map<std::string, Font> m_fonts;
+    bool m_lastFullscreen = false;
+    e172::Vector<std::uint32_t> m_resolution;
+    bool m_anaglyphEnabled = false;
+    bool m_anaglyphEnabled2 = false;
+    std::queue<LensReciept> m_lensQueue;
+    e172::PriorityProcedure::Queue m_drawQueue;
 };
-
-
-#endif // SDLRENDERER_H

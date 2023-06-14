@@ -3,8 +3,12 @@
 
 #include "SDL2/SDL_image.h"
 
-SDLGraphicsProvider::SDLGraphicsProvider(const std::vector<std::string> &args, const char *title, int x, int y) : e172::AbstractGraphicsProvider(args) {
-    m_renderer = new SDLRenderer(title, x, y);
+SDLGraphicsProvider::SDLGraphicsProvider(const std::vector<std::string> &args,
+                                         const std::string &title,
+                                         const e172::Vector<uint32_t> &resolution)
+    : e172::AbstractGraphicsProvider(args)
+{
+    m_renderer = new SDLRenderer(title, resolution);
     installParentToRenderer(m_renderer);
 }
 
@@ -71,7 +75,7 @@ e172::SharedContainer::ptr SDLGraphicsProvider::imageBitMap(e172::SharedContaine
     return e172::Image::handle_cast<SDL_Surface*>(ptr)->c->pixels;
 }
 
-e172::SharedContainer::data_ptr SDLGraphicsProvider::imageFragment(e172::SharedContainer::data_ptr ptr, int x, int y, int &w, int &h) const {
+e172::SharedContainer::data_ptr SDLGraphicsProvider::imageFragment(e172::SharedContainer::data_ptr ptr, std::size_t x, std::size_t y, std::size_t &w, std::size_t &h) const {
     const auto handle = e172::Image::handle_cast<SDL_Surface*>(ptr);
     const auto newHandle = new e172::Image::handle<SDL_Surface*>(SPM::CutOutSurface(handle->c, x, y, w, h));
     w = newHandle->c->w;
@@ -87,7 +91,7 @@ bool SDLGraphicsProvider::saveImage(e172::SharedContainer::data_ptr ptr, const s
     return 0 == IMG_SavePNG(e172::Image::handle_cast<SDL_Surface*>(ptr)->c, path.c_str());
 }
 
-e172::SharedContainer::data_ptr SDLGraphicsProvider::blitImages(e172::SharedContainer::data_ptr ptr0, e172::SharedContainer::data_ptr ptr1, int x, int y, int &w, int &h) const {
+e172::SharedContainer::data_ptr SDLGraphicsProvider::blitImages(e172::SharedContainer::data_ptr ptr0, e172::SharedContainer::data_ptr ptr1, int x, int y, std::size_t &w, std::size_t &h) const {
     const auto handle0 = e172::Image::handle_cast<SDL_Surface*>(ptr0);
     const auto handle1 = e172::Image::handle_cast<SDL_Surface*>(ptr1);
 

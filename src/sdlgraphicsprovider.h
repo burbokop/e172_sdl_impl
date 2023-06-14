@@ -1,44 +1,57 @@
-#ifndef SDLGRAPHICSPROVIDER_H
-#define SDLGRAPHICSPROVIDER_H
+#pragma once
 
 #include "sdlrenderer.h"
-
 #include <src/graphics/abstractgraphicsprovider.h>
 
-
-
-
 class SDLGraphicsProvider : public e172::AbstractGraphicsProvider {
-    SDLRenderer *m_renderer = nullptr;
-
 public:
-    SDLGraphicsProvider(const std::vector<std::string> &args, const char *title, int x, int y);
+    SDLGraphicsProvider(const std::vector<std::string> &args,
+                        const std::string &title,
+                        const e172::Vector<std::uint32_t> &resolution);
+
     ~SDLGraphicsProvider() override;
 
     e172::Image imageFromSDLSurface(SDL_Surface *surface) const;
 
     // AbstractGraphicsProvider interface
 public:
-    virtual e172::AbstractRenderer *renderer() const override;
-    virtual bool isValid() const override;
-    virtual e172::Image loadImage(const std::string &path) const override;
-    virtual e172::Image createImage(int width, int height) const override;
-    virtual e172::Image createImage(int width, int height, const ImageInitFunction &imageInitFunction) const override;
-    virtual e172::Image createImage(int width, int height, const ImageInitFunctionExt &imageInitFunction) const override;
+    e172::AbstractRenderer *renderer() const override;
+    bool isValid() const override;
+    e172::Image loadImage(const std::string &path) const override;
+    e172::Image createImage(int width, int height) const override;
+    e172::Image createImage(int width,
+                            int height,
+                            const ImageInitFunction &imageInitFunction) const override;
+    e172::Image createImage(int width,
+                            int height,
+                            const ImageInitFunctionExt &imageInitFunction) const override;
 
-    virtual void loadFont(const std::string &name, const std::string &path) override;
-    virtual bool fontLoaded(const std::string &name) const override;
+    void loadFont(const std::string &name, const std::string &path) override;
+    bool fontLoaded(const std::string &name) const override;
 
+    // AbstractGraphicsProvider interface
 protected:
-    virtual void destructImage(e172::SharedContainer::data_ptr ptr) const override;
-    virtual e172::SharedContainer::ptr imageBitMap(e172::SharedContainer::data_ptr ptr) const override;
-    virtual e172::SharedContainer::data_ptr imageFragment(e172::SharedContainer::data_ptr ptr, int x, int y, int &w, int &h) const override;
-    virtual e172::SharedContainer::data_ptr transformImage(e172::SharedContainer::data_ptr ptr, uint64_t) const override;
-    virtual bool saveImage(e172::SharedContainer::data_ptr ptr, const std::string &path) const override;    
-    virtual e172::SharedContainer::data_ptr blitImages(e172::SharedContainer::data_ptr ptr0, e172::SharedContainer::data_ptr ptr1, int x, int y, int &w, int &h) const override;
+    void destructImage(e172::SharedContainer::data_ptr ptr) const override;
+    e172::SharedContainer::ptr imageBitMap(e172::SharedContainer::data_ptr ptr) const override;
 
+    e172::SharedContainer::data_ptr imageFragment(e172::SharedContainer::data_ptr ptr,
+                                                  std::size_t x,
+                                                  std::size_t y,
+                                                  std::size_t &w,
+                                                  std::size_t &h) const override;
+
+    e172::SharedContainer::data_ptr transformImage(e172::SharedContainer::data_ptr ptr,
+                                                   uint64_t) const override;
+
+    bool saveImage(e172::SharedContainer::data_ptr ptr, const std::string &path) const override;
+
+    e172::SharedContainer::data_ptr blitImages(e172::SharedContainer::data_ptr ptr0,
+                                               e172::SharedContainer::data_ptr ptr1,
+                                               int x,
+                                               int y,
+                                               std::size_t &w,
+                                               std::size_t &h) const override;
+
+private:
+    SDLRenderer *m_renderer = nullptr;
 };
-
-
-
-#endif // SDLGRAPHICSPROVIDER_H

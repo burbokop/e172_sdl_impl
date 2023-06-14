@@ -1,21 +1,17 @@
-#ifndef VISUALEFFECT_H
-#define VISUALEFFECT_H
+#pragma once
 
 #include <SDL2/SDL.h>
-
-
 #include <src/math/vector.h>
 
-
 class VisualEffect {
-protected:
-    e172::Vector offset;
 public:
-    VisualEffect();
-    VisualEffect(e172::Vector offset);
+    VisualEffect() = default;
+    VisualEffect(e172::Vector<std::int32_t> offset);
     virtual SDL_Surface *operator()(SDL_Surface *input);
-    void setOffset(const e172::Vector &value);
-    virtual ~VisualEffect();
-};
+    void setOffset(const e172::Vector<std::int32_t> &value);
+    virtual ~VisualEffect() = default;
+    const e172::Vector<std::int32_t> &offset() const { return m_offset; }
 
-#endif // VISUALEFFECT_H
+private:
+    e172::Vector<std::int32_t> m_offset;
+};

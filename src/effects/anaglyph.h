@@ -1,19 +1,16 @@
-#ifndef ANAGLYPH_H
-#define ANAGLYPH_H
+#pragma once
 
 #include "visualeffect.h"
-
 #include <math.h>
-
 
 class Anaglyph : public VisualEffect {
 public:
-    Anaglyph();
-    Anaglyph(e172::Vector offset);
+    Anaglyph() = default;
+    Anaglyph(e172::Vector<int32_t> offset)
+        : VisualEffect(offset)
+    {}
 
-// VisualEffect interface
+    // VisualEffect interface
 public:
     SDL_Surface *operator()(SDL_Surface *input);
 };
-
-#endif // ANAGLYPH_H

@@ -125,18 +125,10 @@ SDL_Surface *blendSurface(SDL_Surface *src1, SDL_Surface *src2, int x, int y) {
     return result;
 }
 
-
-Anaglyph::Anaglyph() : VisualEffect () {
-}
-
-Anaglyph::Anaglyph(e172::Vector offset) : VisualEffect (offset) {
-}
-
-
 SDL_Surface *Anaglyph::operator ()(SDL_Surface *input) {
     SDL_Surface *r = separateChannel(input, 0xffff0000);
     SDL_Surface *b = separateChannel(input, 0xff00ffff);
-    SDL_Surface *result = blendSurface(r, b, offset.intX(), offset.intY());
+    SDL_Surface *result = blendSurface(r, b, offset().intX(), offset().intY());
     SDL_FreeSurface(r);
     SDL_FreeSurface(b);
     return result;

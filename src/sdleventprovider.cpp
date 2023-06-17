@@ -13,485 +13,485 @@ e172::Scancode scancodeFromSDL(SDL_Scancode s)
     case SDL_SCANCODE_B:
         return e172::ScancodeB;
     case SDL_SCANCODE_C:
-        todo;
+        return e172::ScancodeC;
     case SDL_SCANCODE_D:
         return e172::ScancodeD;
     case SDL_SCANCODE_E:
         return e172::ScancodeE;
     case SDL_SCANCODE_F:
-        todo;
+        return e172::ScancodeF;
     case SDL_SCANCODE_G:
-        todo;
+        return e172::ScancodeG;
     case SDL_SCANCODE_H:
-        todo;
+        return e172::ScancodeH;
     case SDL_SCANCODE_I:
-        todo;
+        return e172::ScancodeI;
     case SDL_SCANCODE_J:
-        todo;
+        return e172::ScancodeJ;
     case SDL_SCANCODE_K:
-        todo;
+        return e172::ScancodeK;
     case SDL_SCANCODE_L:
-        todo;
+        return e172::ScancodeL;
     case SDL_SCANCODE_M:
-        todo;
+        return e172::ScancodeM;
     case SDL_SCANCODE_N:
-        todo;
+        return e172::ScancodeN;
     case SDL_SCANCODE_O:
-        todo;
+        return e172::ScancodeO;
     case SDL_SCANCODE_P:
-        todo;
+        return e172::ScancodeP;
     case SDL_SCANCODE_Q:
-        todo;
+        return e172::ScancodeQ;
     case SDL_SCANCODE_R:
-        todo;
+        return e172::ScancodeR;
     case SDL_SCANCODE_S:
         return e172::ScancodeS;
     case SDL_SCANCODE_T:
-        todo;
+        return e172::ScancodeT;
     case SDL_SCANCODE_U:
-        todo;
+        return e172::ScancodeU;
     case SDL_SCANCODE_V:
-        todo;
+        return e172::ScancodeV;
     case SDL_SCANCODE_W:
         return e172::ScancodeW;
     case SDL_SCANCODE_X:
-        todo;
+        return e172::ScancodeX;
     case SDL_SCANCODE_Y:
-        todo;
+        return e172::ScancodeY;
     case SDL_SCANCODE_Z:
-        todo;
+        return e172::ScancodeZ;
     case SDL_SCANCODE_1:
-        todo;
+        return e172::Scancode1;
     case SDL_SCANCODE_2:
-        todo;
+        return e172::Scancode2;
     case SDL_SCANCODE_3:
-        todo;
+        return e172::Scancode3;
     case SDL_SCANCODE_4:
-        todo;
+        return e172::Scancode4;
     case SDL_SCANCODE_5:
-        todo;
+        return e172::Scancode5;
     case SDL_SCANCODE_6:
-        todo;
+        return e172::Scancode6;
     case SDL_SCANCODE_7:
-        todo;
+        return e172::Scancode7;
     case SDL_SCANCODE_8:
-        todo;
+        return e172::Scancode8;
     case SDL_SCANCODE_9:
-        todo;
+        return e172::Scancode9;
     case SDL_SCANCODE_0:
-        todo;
+        return e172::Scancode0;
     case SDL_SCANCODE_RETURN:
-        todo;
+        return e172::ScancodeReturn;
     case SDL_SCANCODE_ESCAPE:
-        todo;
+        return e172::ScancodeEscape;
     case SDL_SCANCODE_BACKSPACE:
-        todo;
+        return e172::ScancodeBackSpace;
     case SDL_SCANCODE_TAB:
-        todo;
+        return e172::ScancodeTab;
     case SDL_SCANCODE_SPACE:
         return e172::ScancodeSpace;
     case SDL_SCANCODE_MINUS:
-        todo;
+        return e172::ScancodeMinus;
     case SDL_SCANCODE_EQUALS:
-        todo;
+        return e172::ScancodeEquals;
     case SDL_SCANCODE_LEFTBRACKET:
-        todo;
+        return e172::ScancodeLeftBracket;
     case SDL_SCANCODE_RIGHTBRACKET:
-        todo;
+        return e172::ScancodeRightBracket;
     case SDL_SCANCODE_BACKSLASH:
-        todo;
+        return e172::ScancodeBackslash;
     case SDL_SCANCODE_NONUSHASH:
-        todo;
+        return e172::ScancodeNonUSHash;
     case SDL_SCANCODE_SEMICOLON:
-        todo;
+        return e172::ScancodeSemicolon;
     case SDL_SCANCODE_APOSTROPHE:
-        todo;
+        return e172::ScancodeApostrophe;
     case SDL_SCANCODE_GRAVE:
-        todo;
+        return e172::ScancodeGrave;
     case SDL_SCANCODE_COMMA:
-        todo;
+        return e172::ScancodeComma;
     case SDL_SCANCODE_PERIOD:
-        todo;
+        return e172::ScancodePeriod;
     case SDL_SCANCODE_SLASH:
-        todo;
+        return e172::ScancodeSlash;
     case SDL_SCANCODE_CAPSLOCK:
-        todo;
+        return e172::ScancodeCapsLock;
     case SDL_SCANCODE_F1:
-        todo;
+        return e172::ScancodeF1;
     case SDL_SCANCODE_F2:
-        todo;
+        return e172::ScancodeF2;
     case SDL_SCANCODE_F3:
-        todo;
+        return e172::ScancodeF3;
     case SDL_SCANCODE_F4:
-        todo;
+        return e172::ScancodeF4;
     case SDL_SCANCODE_F5:
-        todo;
+        return e172::ScancodeF5;
     case SDL_SCANCODE_F6:
-        todo;
+        return e172::ScancodeF6;
     case SDL_SCANCODE_F7:
-        todo;
+        return e172::ScancodeF7;
     case SDL_SCANCODE_F8:
-        todo;
+        return e172::ScancodeF8;
     case SDL_SCANCODE_F9:
-        todo;
+        return e172::ScancodeF9;
     case SDL_SCANCODE_F10:
-        todo;
+        return e172::ScancodeF10;
     case SDL_SCANCODE_F11:
-        todo;
+        return e172::ScancodeF11;
     case SDL_SCANCODE_F12:
-        todo;
+        return e172::ScancodeF12;
     case SDL_SCANCODE_PRINTSCREEN:
-        todo;
+        return e172::ScancodePrintScreen;
     case SDL_SCANCODE_SCROLLLOCK:
-        todo;
+        return e172::ScancodeScrollLock;
     case SDL_SCANCODE_PAUSE:
-        todo;
+        return e172::ScancodePause;
     case SDL_SCANCODE_INSERT:
-        todo;
+        return e172::ScancodeInsert;
     case SDL_SCANCODE_HOME:
-        todo;
+        return e172::ScancodeHome;
     case SDL_SCANCODE_PAGEUP:
-        todo;
+        return e172::ScancodePageUp;
     case SDL_SCANCODE_DELETE:
-        todo;
+        return e172::ScancodeDelete;
     case SDL_SCANCODE_END:
-        todo;
+        return e172::ScancodeEnd;
     case SDL_SCANCODE_PAGEDOWN:
-        todo;
+        return e172::ScancodePageDown;
     case SDL_SCANCODE_RIGHT:
-        todo;
+        return e172::ScancodeRight;
     case SDL_SCANCODE_LEFT:
-        todo;
+        return e172::ScancodeLeft;
     case SDL_SCANCODE_DOWN:
-        todo;
+        return e172::ScancodeDown;
     case SDL_SCANCODE_UP:
-        todo;
+        return e172::ScancodeUp;
     case SDL_SCANCODE_NUMLOCKCLEAR:
-        todo;
+        return e172::ScancodeNumLockClear;
     case SDL_SCANCODE_KP_DIVIDE:
-        todo;
+        return e172::ScancodeKpDivide;
     case SDL_SCANCODE_KP_MULTIPLY:
-        todo;
+        return e172::ScancodeKpMultiply;
     case SDL_SCANCODE_KP_MINUS:
-        todo;
+        return e172::ScancodeKpMinus;
     case SDL_SCANCODE_KP_PLUS:
-        todo;
+        return e172::ScancodeKpPlus;
     case SDL_SCANCODE_KP_ENTER:
-        todo;
+        return e172::ScancodeKpEnter;
     case SDL_SCANCODE_KP_1:
-        todo;
+        return e172::ScancodeKp1;
     case SDL_SCANCODE_KP_2:
-        todo;
+        return e172::ScancodeKp2;
     case SDL_SCANCODE_KP_3:
-        todo;
+        return e172::ScancodeKp3;
     case SDL_SCANCODE_KP_4:
-        todo;
+        return e172::ScancodeKp4;
     case SDL_SCANCODE_KP_5:
-        todo;
+        return e172::ScancodeKp5;
     case SDL_SCANCODE_KP_6:
-        todo;
+        return e172::ScancodeKp6;
     case SDL_SCANCODE_KP_7:
-        todo;
+        return e172::ScancodeKp7;
     case SDL_SCANCODE_KP_8:
-        todo;
+        return e172::ScancodeKp8;
     case SDL_SCANCODE_KP_9:
-        todo;
+        return e172::ScancodeKp9;
     case SDL_SCANCODE_KP_0:
-        todo;
+        return e172::ScancodeKp0;
     case SDL_SCANCODE_KP_PERIOD:
-        todo;
+        return e172::ScancodeKpPeriod;
     case SDL_SCANCODE_NONUSBACKSLASH:
-        todo;
+        return e172::ScancodeNonUSBackSlash;
     case SDL_SCANCODE_APPLICATION:
-        todo;
+        return e172::ScancodeApplication;
     case SDL_SCANCODE_POWER:
-        todo;
+        return e172::ScancodePower;
     case SDL_SCANCODE_KP_EQUALS:
-        todo;
+        return e172::ScancodeEquals;
     case SDL_SCANCODE_F13:
-        todo;
+        return e172::ScancodeF13;
     case SDL_SCANCODE_F14:
-        todo;
+        return e172::ScancodeF14;
     case SDL_SCANCODE_F15:
-        todo;
+        return e172::ScancodeF15;
     case SDL_SCANCODE_F16:
-        todo;
+        return e172::ScancodeF16;
     case SDL_SCANCODE_F17:
-        todo;
+        return e172::ScancodeF17;
     case SDL_SCANCODE_F18:
-        todo;
+        return e172::ScancodeF18;
     case SDL_SCANCODE_F19:
-        todo;
+        return e172::ScancodeF19;
     case SDL_SCANCODE_F20:
-        todo;
+        return e172::ScancodeF20;
     case SDL_SCANCODE_F21:
-        todo;
+        return e172::ScancodeF21;
     case SDL_SCANCODE_F22:
-        todo;
+        return e172::ScancodeF22;
     case SDL_SCANCODE_F23:
-        todo;
+        return e172::ScancodeF23;
     case SDL_SCANCODE_F24:
-        todo;
+        return e172::ScancodeF24;
     case SDL_SCANCODE_EXECUTE:
-        todo;
+        return e172::ScancodeExecute;
     case SDL_SCANCODE_HELP:
-        todo;
+        return e172::ScancodeHelp;
     case SDL_SCANCODE_MENU:
-        todo;
+        return e172::ScancodeMenu;
     case SDL_SCANCODE_SELECT:
-        todo;
+        return e172::ScancodeSelect;
     case SDL_SCANCODE_STOP:
-        todo;
+        return e172::ScancodeStop;
     case SDL_SCANCODE_AGAIN:
-        todo;
+        return e172::ScancodeAgain;
     case SDL_SCANCODE_UNDO:
-        todo;
+        return e172::ScancodeUndo;
     case SDL_SCANCODE_CUT:
-        todo;
+        return e172::ScancodeCut;
     case SDL_SCANCODE_COPY:
-        todo;
+        return e172::ScancodeCopy;
     case SDL_SCANCODE_PASTE:
-        todo;
+        return e172::ScancodePaste;
     case SDL_SCANCODE_FIND:
-        todo;
+        return e172::ScancodeFind;
     case SDL_SCANCODE_MUTE:
-        todo;
+        return e172::ScancodeMute;
     case SDL_SCANCODE_VOLUMEUP:
-        todo;
+        return e172::ScancodeVolumeUp;
     case SDL_SCANCODE_VOLUMEDOWN:
-        todo;
+        return e172::ScancodeVolumeDown;
     case SDL_SCANCODE_KP_COMMA:
-        todo;
+        return e172::ScancodeKPComma;
     case SDL_SCANCODE_KP_EQUALSAS400:
-        todo;
+        return e172::ScancodeKPEqualSas400;
     case SDL_SCANCODE_INTERNATIONAL1:
-        todo;
+        return e172::ScancodeInternational1;
     case SDL_SCANCODE_INTERNATIONAL2:
-        todo;
+        return e172::ScancodeInternational2;
     case SDL_SCANCODE_INTERNATIONAL3:
-        todo;
+        return e172::ScancodeInternational3;
     case SDL_SCANCODE_INTERNATIONAL4:
-        todo;
+        return e172::ScancodeInternational4;
     case SDL_SCANCODE_INTERNATIONAL5:
-        todo;
+        return e172::ScancodeInternational5;
     case SDL_SCANCODE_INTERNATIONAL6:
-        todo;
+        return e172::ScancodeInternational6;
     case SDL_SCANCODE_INTERNATIONAL7:
-        todo;
+        return e172::ScancodeInternational7;
     case SDL_SCANCODE_INTERNATIONAL8:
-        todo;
+        return e172::ScancodeInternational8;
     case SDL_SCANCODE_INTERNATIONAL9:
-        todo;
+        return e172::ScancodeInternational9;
     case SDL_SCANCODE_LANG1:
-        todo;
+        return e172::ScancodeLang1;
     case SDL_SCANCODE_LANG2:
-        todo;
+        return e172::ScancodeLang2;
     case SDL_SCANCODE_LANG3:
-        todo;
+        return e172::ScancodeLang3;
     case SDL_SCANCODE_LANG4:
-        todo;
+        return e172::ScancodeLang4;
     case SDL_SCANCODE_LANG5:
-        todo;
+        return e172::ScancodeLang5;
     case SDL_SCANCODE_LANG6:
-        todo;
+        return e172::ScancodeLang6;
     case SDL_SCANCODE_LANG7:
-        todo;
+        return e172::ScancodeLang7;
     case SDL_SCANCODE_LANG8:
-        todo;
+        return e172::ScancodeLang8;
     case SDL_SCANCODE_LANG9:
-        todo;
+        return e172::ScancodeLang9;
     case SDL_SCANCODE_ALTERASE:
-        todo;
+        return e172::ScancodeAltErase;
     case SDL_SCANCODE_SYSREQ:
-        todo;
+        return e172::ScancodeSysReq;
     case SDL_SCANCODE_CANCEL:
-        todo;
+        return e172::ScancodeCancel;
     case SDL_SCANCODE_CLEAR:
-        todo;
+        return e172::ScancodeClear;
     case SDL_SCANCODE_PRIOR:
-        todo;
+        return e172::ScancodePeriod;
     case SDL_SCANCODE_RETURN2:
-        todo;
+        return e172::ScancodeReturn2;
     case SDL_SCANCODE_SEPARATOR:
-        todo;
+        return e172::ScancodeSeparator;
     case SDL_SCANCODE_OUT:
-        todo;
+        return e172::ScancodeOut;
     case SDL_SCANCODE_OPER:
-        todo;
+        return e172::ScancodeOper;
     case SDL_SCANCODE_CLEARAGAIN:
-        todo;
+        return e172::ScancodeClearAgain;
     case SDL_SCANCODE_CRSEL:
-        todo;
+        return e172::ScancodeCrsel;
     case SDL_SCANCODE_EXSEL:
-        todo;
+        return e172::ScancodeExsel;
     case SDL_SCANCODE_KP_00:
-        todo;
+        return e172::ScancodeKP00;
     case SDL_SCANCODE_KP_000:
-        todo;
+        return e172::ScancodeKP000;
     case SDL_SCANCODE_THOUSANDSSEPARATOR:
-        todo;
+        return e172::ScancodeThousandsSeparator;
     case SDL_SCANCODE_DECIMALSEPARATOR:
-        todo;
+        return e172::ScancodeDecimalSeparator;
     case SDL_SCANCODE_CURRENCYUNIT:
-        todo;
+        return e172::ScancodeCurrencyUnit;
     case SDL_SCANCODE_CURRENCYSUBUNIT:
-        todo;
+        return e172::ScancodeCurrencySubunit;
     case SDL_SCANCODE_KP_LEFTPAREN:
-        todo;
+        return e172::ScancodeKpLeftParen;
     case SDL_SCANCODE_KP_RIGHTPAREN:
-        todo;
+        return e172::ScancodeKpRightParen;
     case SDL_SCANCODE_KP_LEFTBRACE:
-        todo;
+        return e172::ScancodeKpLeftBrace;
     case SDL_SCANCODE_KP_RIGHTBRACE:
-        todo;
+        return e172::ScancodeKpRightBrace;
     case SDL_SCANCODE_KP_TAB:
-        todo;
+        return e172::ScancodeKpTab;
     case SDL_SCANCODE_KP_BACKSPACE:
-        todo;
+        return e172::ScancodeKpBackspace;
     case SDL_SCANCODE_KP_A:
-        todo;
+        return e172::ScancodeKpA;
     case SDL_SCANCODE_KP_B:
-        todo;
+        return e172::ScancodeKpB;
     case SDL_SCANCODE_KP_C:
-        todo;
+        return e172::ScancodeKpC;
     case SDL_SCANCODE_KP_D:
-        todo;
+        return e172::ScancodeKpD;
     case SDL_SCANCODE_KP_E:
-        todo;
+        return e172::ScancodeKpE;
     case SDL_SCANCODE_KP_F:
-        todo;
+        return e172::ScancodeKpE;
     case SDL_SCANCODE_KP_XOR:
-        todo;
+        return e172::ScancodeKpXor;
     case SDL_SCANCODE_KP_POWER:
-        todo;
+        return e172::ScancodeKpPower;
     case SDL_SCANCODE_KP_PERCENT:
-        todo;
+        return e172::ScancodeKpPercent;
     case SDL_SCANCODE_KP_LESS:
-        todo;
+        return e172::ScancodeKpLess;
     case SDL_SCANCODE_KP_GREATER:
-        todo;
+        return e172::ScancodeKpGreater;
     case SDL_SCANCODE_KP_AMPERSAND:
-        todo;
+        return e172::ScancodeKpAmpersand;
     case SDL_SCANCODE_KP_DBLAMPERSAND:
-        todo;
+        return e172::ScancodeKpDblAmpersand;
     case SDL_SCANCODE_KP_VERTICALBAR:
-        todo;
+        return e172::ScancodeKpVerticalBar;
     case SDL_SCANCODE_KP_DBLVERTICALBAR:
-        todo;
+        return e172::ScancodeKpDblVerticalBar;
     case SDL_SCANCODE_KP_COLON:
-        todo;
+        return e172::ScancodeKpColon;
     case SDL_SCANCODE_KP_HASH:
-        todo;
+        return e172::ScancodeKpHash;
     case SDL_SCANCODE_KP_SPACE:
-        todo;
+        return e172::ScancodeKpSpace;
     case SDL_SCANCODE_KP_AT:
-        todo;
+        return e172::ScancodeKpAt;
     case SDL_SCANCODE_KP_EXCLAM:
-        todo;
+        return e172::ScancodeKpExclam;
     case SDL_SCANCODE_KP_MEMSTORE:
-        todo;
+        return e172::ScancodeKpMemStore;
     case SDL_SCANCODE_KP_MEMRECALL:
-        todo;
+        return e172::ScancodeKpMemRecall;
     case SDL_SCANCODE_KP_MEMCLEAR:
-        todo;
+        return e172::ScancodeKpMemClear;
     case SDL_SCANCODE_KP_MEMADD:
-        todo;
+        return e172::ScancodeKpMemAdd;
     case SDL_SCANCODE_KP_MEMSUBTRACT:
-        todo;
+        return e172::ScancodeKpMemSubtract;
     case SDL_SCANCODE_KP_MEMMULTIPLY:
-        todo;
+        return e172::ScancodeKpMemMultiply;
     case SDL_SCANCODE_KP_MEMDIVIDE:
-        todo;
+        return e172::ScancodeKpMemDivide;
     case SDL_SCANCODE_KP_PLUSMINUS:
-        todo;
+        return e172::ScancodeKpPlusMinus;
     case SDL_SCANCODE_KP_CLEAR:
-        todo;
+        return e172::ScancodeKpClear;
     case SDL_SCANCODE_KP_CLEARENTRY:
-        todo;
+        return e172::ScancodeKpClearEntry;
     case SDL_SCANCODE_KP_BINARY:
-        todo;
+        return e172::ScancodeKpBinary;
     case SDL_SCANCODE_KP_OCTAL:
-        todo;
+        return e172::ScancodeKpOctal;
     case SDL_SCANCODE_KP_DECIMAL:
-        todo;
+        return e172::ScancodeKpDecimal;
     case SDL_SCANCODE_KP_HEXADECIMAL:
-        todo;
+        return e172::ScancodeKpHexadecimal;
     case SDL_SCANCODE_LCTRL:
-        todo;
+        return e172::ScancodeLCtrl;
     case SDL_SCANCODE_LSHIFT:
-        todo;
+        return e172::ScancodeLShift;
     case SDL_SCANCODE_LALT:
-        todo;
+        return e172::ScancodeLAlt;
     case SDL_SCANCODE_LGUI:
-        todo;
+        return e172::ScancodeLGui;
     case SDL_SCANCODE_RCTRL:
-        todo;
+        return e172::ScancodeRCtrl;
     case SDL_SCANCODE_RSHIFT:
-        todo;
+        return e172::ScancodeRShift;
     case SDL_SCANCODE_RALT:
-        todo;
+        return e172::ScancodeRAlt;
     case SDL_SCANCODE_RGUI:
-        todo;
+        return e172::ScancodeRGui;
     case SDL_SCANCODE_MODE:
-        todo;
+        return e172::ScancodeMode;
     case SDL_SCANCODE_AUDIONEXT:
-        todo;
+        return e172::ScancodeAudioNext;
     case SDL_SCANCODE_AUDIOPREV:
-        todo;
+        return e172::ScancodeAudioPrev;
     case SDL_SCANCODE_AUDIOSTOP:
-        todo;
+        return e172::ScancodeAudioStop;
     case SDL_SCANCODE_AUDIOPLAY:
-        todo;
+        return e172::ScancodeAudioPlay;
     case SDL_SCANCODE_AUDIOMUTE:
-        todo;
+        return e172::ScancodeAudioMute;
     case SDL_SCANCODE_MEDIASELECT:
-        todo;
+        return e172::ScancodeMediaSelect;
     case SDL_SCANCODE_WWW:
-        todo;
+        return e172::ScancodeWWW;
     case SDL_SCANCODE_MAIL:
-        todo;
+        return e172::ScancodeMail;
     case SDL_SCANCODE_CALCULATOR:
-        todo;
+        return e172::ScancodeCalculator;
     case SDL_SCANCODE_COMPUTER:
-        todo;
+        return e172::ScancodeComputer;
     case SDL_SCANCODE_AC_SEARCH:
-        todo;
+        return e172::ScancodeAcSearch;
     case SDL_SCANCODE_AC_HOME:
-        todo;
+        return e172::ScancodeAcHome;
     case SDL_SCANCODE_AC_BACK:
-        todo;
+        return e172::ScancodeAcBack;
     case SDL_SCANCODE_AC_FORWARD:
-        todo;
+        return e172::ScancodeAcForward;
     case SDL_SCANCODE_AC_STOP:
-        todo;
+        return e172::ScancodeAcStop;
     case SDL_SCANCODE_AC_REFRESH:
-        todo;
+        return e172::ScancodeAcRefresh;
     case SDL_SCANCODE_AC_BOOKMARKS:
-        todo;
+        return e172::ScancodeAcBookmarks;
     case SDL_SCANCODE_BRIGHTNESSDOWN:
-        todo;
+        return e172::ScancodeBrightnessDown;
     case SDL_SCANCODE_BRIGHTNESSUP:
-        todo;
+        return e172::ScancodeBrightnessUp;
     case SDL_SCANCODE_DISPLAYSWITCH:
-        todo;
+        return e172::ScancodeDisplaySwitch;
     case SDL_SCANCODE_KBDILLUMTOGGLE:
-        todo;
+        return e172::ScancodeKbDillumToggle;
     case SDL_SCANCODE_KBDILLUMDOWN:
-        todo;
+        return e172::ScancodeKbDillumDown;
     case SDL_SCANCODE_KBDILLUMUP:
-        todo;
+        return e172::ScancodeKbDillumUp;
     case SDL_SCANCODE_EJECT:
-        todo;
+        return e172::ScancodeEject;
     case SDL_SCANCODE_SLEEP:
-        todo;
+        return e172::ScancodeSleep;
     case SDL_SCANCODE_APP1:
-        todo;
+        return e172::ScancodeApp1;
     case SDL_SCANCODE_APP2:
-        todo;
+        return e172::ScancodeApp2;
     case SDL_SCANCODE_AUDIOREWIND:
-        todo;
+        return e172::ScancodeAudioRewind;
     case SDL_SCANCODE_AUDIOFASTFORWARD:
-        todo;
+        return e172::ScancodeAudioFastForward;
     case SDL_SCANCODE_SOFTLEFT:
         todo;
     case SDL_SCANCODE_SOFTRIGHT:

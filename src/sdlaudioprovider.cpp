@@ -1,6 +1,6 @@
 #include "sdlaudioprovider.h"
-#include "SDL2/SDL_mixer.h"
 
+#include <SDL2/SDL_mixer.h>
 #include <src/debug.h>
 
 SDLAudioProvider::SDLAudioProvider() {
@@ -8,12 +8,10 @@ SDLAudioProvider::SDLAudioProvider() {
 }
 
 e172::AudioSample SDLAudioProvider::loadAudioSample(const std::string &path) {
-    auto audio = Mix_LoadWAV(path.c_str());
-
-    if (audio){
-        auto handle = new e172::AudioSample::handle<Mix_Chunk *> (audio);
-        return __newAudioSample(handle, this, [](e172::AudioSample::data_ptr handle){
-            auto h = e172::AudioSample::handle_cast<Mix_Chunk*>(handle);
+    if (auto audio = Mix_LoadWAV(path.c_str())) {
+        auto handle = new e172::AudioSample::Handle<Mix_Chunk *>(audio);
+        return createAudioSample(handle, this, [](e172::AudioSample::DataPtr handle) {
+            auto h = e172::AudioSample::castHandle<Mix_Chunk *>(handle);
             Mix_FreeChunk(h->c);
             delete h;
         });
@@ -25,7 +23,6 @@ e172::AudioSample SDLAudioProvider::loadAudioSample(const std::string &path) {
 e172::AudioChannel SDLAudioProvider::reserveChannel() {
     m_currentChannelCount++;
     if (m_currentChannelCount > m_reservedChannelCount){
-
         m_reservedChannelCount = Mix_AllocateChannels(m_reservedChannelCount + ReserveStep);
         if (m_currentChannelCount > m_reservedChannelCount){
             e172::Debug::warning("Audio channel can not be created, created:",
@@ -34,45 +31,39 @@ e172::AudioChannel SDLAudioProvider::reserveChannel() {
                                  m_currentChannelCount);
         }
     }
-    int channel = 0;
 
+    int channel = 0;
     if (freeChannel.size() > 0){
         channel = freeChannel.front();
         freeChannel.pop();
-
     } else {
-
         channel = m_currentChannelCount - 1;
     }
 
-
-    return __newAudioChannel(
-                new e172::AudioChannel::handle<int>(channel),
-                this,
-                [this](e172::AudioChannel::data_ptr data){
-        auto c = e172::AudioChannel::handle_cast<int>(data);
-        Mix_Pause(c->c);
-        freeChannel.push(c->c);
-        delete c;
-    },
-    [this](e172::AudioChannel::data_ptr data , double volume){
-    auto c = e172::AudioChannel::handle_cast<int>(data);
-    Mix_Volume(c->c, static_cast<int>(MIX_MAX_VOLUME * volume * generalVolume()));
-},
-[](e172::AudioChannel::data_ptr data, const e172::AudioSample& sample, int loops){
-    const auto c = e172::AudioChannel::handle_cast<int>(data);
-    const auto s = audioSampleData<Mix_Chunk*>(sample);
-    Mix_PlayChannelTimed(c->c, s, loops - 1, -1);
-},
-[](e172::AudioChannel::data_ptr data){
-    auto c = e172::AudioChannel::handle_cast<int>(data);
-    return Mix_Playing(c->c);
-
-},
-[](e172::AudioChannel::data_ptr data){
-    auto c = e172::AudioChannel::handle_cast<int>(data);
-    Mix_Pause(c->c);
-}
-);
-
+    return createAudioChannel(
+        new e172::AudioChannel::Handle<int>(channel),
+        this,
+        [this](e172::AudioChannel::DataPtr data) {
+            auto c = e172::AudioChannel::castHandle<int>(data);
+            Mix_Pause(c->c);
+            freeChannel.push(c->c);
+            delete c;
+        },
+        [this](e172::AudioChannel::DataPtr data, double volume) {
+            auto c = e172::AudioChannel::castHandle<int>(data);
+            Mix_Volume(c->c, static_cast<int>(MIX_MAX_VOLUME * volume * generalVolume()));
+        },
+        [](e172::AudioChannel::DataPtr data, const e172::AudioSample &sample, int loops) {
+            const auto c = e172::AudioChannel::castHandle<int>(data);
+            const auto s = audioSampleData<Mix_Chunk *>(sample);
+            Mix_PlayChannelTimed(c->c, s, loops - 1, -1);
+        },
+        [](e172::AudioChannel::DataPtr data) {
+            auto c = e172::AudioChannel::castHandle<int>(data);
+            return Mix_Playing(c->c);
+        },
+        [](e172::AudioChannel::DataPtr data) {
+            auto c = e172::AudioChannel::castHandle<int>(data);
+            Mix_Pause(c->c);
+        });
 }

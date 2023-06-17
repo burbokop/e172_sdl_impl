@@ -18,7 +18,9 @@ SDLGraphicsProvider::~SDLGraphicsProvider() {
 
 e172::Image SDLGraphicsProvider::imageFromSDLSurface(SDL_Surface *surface) const {
     if(surface) {
-        return imageFromData(new e172::Image::handle<SDL_Surface*>(surface), surface->w, surface->h);
+        return imageFromData(new e172::Image::Handle<SDL_Surface *>(surface),
+                             surface->w,
+                             surface->h);
     }
     return e172::Image();
 }
@@ -65,35 +67,53 @@ bool SDLGraphicsProvider::fontLoaded(const std::string &name) const {
     return m_renderer->m_fonts.find(name) != m_renderer->m_fonts.end();
 }
 
-void SDLGraphicsProvider::destructImage(e172::SharedContainer::data_ptr ptr) const {
-    const auto handle = e172::Image::handle_cast<SDL_Surface*>(ptr);
+void SDLGraphicsProvider::destructImage(e172::SharedContainer::DataPtr ptr) const
+{
+    const auto handle = e172::Image::castHandle<SDL_Surface *>(ptr);
     SDL_FreeSurface(handle->c);
     delete handle;
 }
 
-e172::SharedContainer::ptr SDLGraphicsProvider::imageBitMap(e172::SharedContainer::data_ptr ptr) const {
-    return e172::Image::handle_cast<SDL_Surface*>(ptr)->c->pixels;
+e172::SharedContainer::Ptr SDLGraphicsProvider::imageBitMap(e172::SharedContainer::DataPtr ptr) const
+{
+    return e172::Image::castHandle<SDL_Surface *>(ptr)->c->pixels;
 }
 
-e172::SharedContainer::data_ptr SDLGraphicsProvider::imageFragment(e172::SharedContainer::data_ptr ptr, std::size_t x, std::size_t y, std::size_t &w, std::size_t &h) const {
-    const auto handle = e172::Image::handle_cast<SDL_Surface*>(ptr);
-    const auto newHandle = new e172::Image::handle<SDL_Surface*>(SPM::CutOutSurface(handle->c, x, y, w, h));
+e172::SharedContainer::DataPtr SDLGraphicsProvider::imageFragment(e172::SharedContainer::DataPtr ptr,
+                                                                  std::size_t x,
+                                                                  std::size_t y,
+                                                                  std::size_t &w,
+                                                                  std::size_t &h) const
+{
+    const auto handle = e172::Image::castHandle<SDL_Surface *>(ptr);
+    const auto newHandle = new e172::Image::Handle<SDL_Surface *>(
+        SPM::CutOutSurface(handle->c, x, y, w, h));
     w = newHandle->c->w;
     h = newHandle->c->h;
     return newHandle;
 }
 
-e172::SharedContainer::data_ptr SDLGraphicsProvider::transformImage(e172::SharedContainer::data_ptr ptr, uint64_t) const {
+e172::SharedContainer::DataPtr SDLGraphicsProvider::transformImage(
+    e172::SharedContainer::DataPtr ptr, uint64_t) const
+{
     return ptr;
 }
 
-bool SDLGraphicsProvider::saveImage(e172::SharedContainer::data_ptr ptr, const std::string & path) const {
-    return 0 == IMG_SavePNG(e172::Image::handle_cast<SDL_Surface*>(ptr)->c, path.c_str());
+bool SDLGraphicsProvider::saveImage(e172::SharedContainer::DataPtr ptr,
+                                    const std::string &path) const
+{
+    return 0 == IMG_SavePNG(e172::Image::castHandle<SDL_Surface *>(ptr)->c, path.c_str());
 }
 
-e172::SharedContainer::data_ptr SDLGraphicsProvider::blitImages(e172::SharedContainer::data_ptr ptr0, e172::SharedContainer::data_ptr ptr1, int x, int y, std::size_t &w, std::size_t &h) const {
-    const auto handle0 = e172::Image::handle_cast<SDL_Surface*>(ptr0);
-    const auto handle1 = e172::Image::handle_cast<SDL_Surface*>(ptr1);
+e172::SharedContainer::DataPtr SDLGraphicsProvider::blitImages(e172::SharedContainer::DataPtr ptr0,
+                                                               e172::SharedContainer::DataPtr ptr1,
+                                                               int x,
+                                                               int y,
+                                                               std::size_t &w,
+                                                               std::size_t &h) const
+{
+    const auto handle0 = e172::Image::castHandle<SDL_Surface *>(ptr0);
+    const auto handle1 = e172::Image::castHandle<SDL_Surface *>(ptr1);
 
     const auto result = SPM::CopySurface(handle0->c);
     if(!result)
@@ -107,5 +127,5 @@ e172::SharedContainer::data_ptr SDLGraphicsProvider::blitImages(e172::SharedCont
     w = result->w;
     h = result->h;
 
-    return new e172::Image::handle<SDL_Surface*>(result);
+    return new e172::Image::Handle<SDL_Surface *>(result);
 }

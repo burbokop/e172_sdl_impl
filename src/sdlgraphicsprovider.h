@@ -31,26 +31,26 @@ public:
 
     // AbstractGraphicsProvider interface
 protected:
-    void destructImage(e172::SharedContainer::data_ptr ptr) const override;
-    e172::SharedContainer::ptr imageBitMap(e172::SharedContainer::data_ptr ptr) const override;
+    void destructImage(e172::SharedContainer::DataPtr ptr) const override;
+    e172::SharedContainer::Ptr imageBitMap(e172::SharedContainer::DataPtr ptr) const override;
 
-    e172::SharedContainer::data_ptr imageFragment(e172::SharedContainer::data_ptr ptr,
-                                                  std::size_t x,
-                                                  std::size_t y,
-                                                  std::size_t &w,
-                                                  std::size_t &h) const override;
+    e172::SharedContainer::DataPtr imageFragment(e172::SharedContainer::DataPtr ptr,
+                                                 std::size_t x,
+                                                 std::size_t y,
+                                                 std::size_t &w,
+                                                 std::size_t &h) const override;
 
-    e172::SharedContainer::data_ptr transformImage(e172::SharedContainer::data_ptr ptr,
-                                                   uint64_t) const override;
+    e172::SharedContainer::DataPtr transformImage(e172::SharedContainer::DataPtr ptr,
+                                                  uint64_t) const override;
 
-    bool saveImage(e172::SharedContainer::data_ptr ptr, const std::string &path) const override;
+    bool saveImage(e172::SharedContainer::DataPtr ptr, const std::string &path) const override;
 
-    e172::SharedContainer::data_ptr blitImages(e172::SharedContainer::data_ptr ptr0,
-                                               e172::SharedContainer::data_ptr ptr1,
-                                               int x,
-                                               int y,
-                                               std::size_t &w,
-                                               std::size_t &h) const override;
+    e172::SharedContainer::DataPtr blitImages(e172::SharedContainer::DataPtr ptr0,
+                                              e172::SharedContainer::DataPtr ptr1,
+                                              int x,
+                                              int y,
+                                              std::size_t &w,
+                                              std::size_t &h) const override;
 
 private:
     SDLRenderer *m_renderer = nullptr;

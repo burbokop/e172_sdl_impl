@@ -7,7 +7,7 @@ e172::Scancode scancodeFromSDL(SDL_Scancode s)
 {
     switch (s) {
     case SDL_SCANCODE_UNKNOWN:
-        todo;
+        return e172::ScancodeUnknown;
     case SDL_SCANCODE_A:
         return e172::ScancodeA;
     case SDL_SCANCODE_B:
@@ -493,15 +493,15 @@ e172::Scancode scancodeFromSDL(SDL_Scancode s)
     case SDL_SCANCODE_AUDIOFASTFORWARD:
         return e172::ScancodeAudioFastForward;
     case SDL_SCANCODE_SOFTLEFT:
-        todo;
+        return e172::ScancodeSoftLeft;
     case SDL_SCANCODE_SOFTRIGHT:
-        todo;
+        return e172::ScancodeSoftRight;
     case SDL_SCANCODE_CALL:
-        todo;
+        return e172::ScancodeCall;
     case SDL_SCANCODE_ENDCALL:
-        todo;
+        return e172::ScancodeEndCall;
     case SDL_NUM_SCANCODES:
-        todo;
+        return e172::ScancodesCount;
     }
     return e172::ScancodeUnknown;
 }

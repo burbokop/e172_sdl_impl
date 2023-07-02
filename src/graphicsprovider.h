@@ -1,15 +1,18 @@
 #pragma once
 
-#include "sdlrenderer.h"
-#include <src/graphics/abstractgraphicsprovider.h>
+#include "renderer.h"
+#include <e172/graphics/abstractgraphicsprovider.h>
 
-class SDLGraphicsProvider : public e172::AbstractGraphicsProvider {
+namespace e172::impl::sdl {
+
+class GraphicsProvider : public e172::AbstractGraphicsProvider
+{
 public:
-    SDLGraphicsProvider(const std::vector<std::string> &args,
-                        const std::string &title,
-                        const e172::Vector<std::uint32_t> &resolution);
+    GraphicsProvider(const std::vector<std::string> &args,
+                     const std::string &title,
+                     const e172::Vector<std::uint32_t> &resolution);
 
-    ~SDLGraphicsProvider() override;
+    ~GraphicsProvider() override;
 
     e172::Image imageFromSDLSurface(SDL_Surface *surface) const;
 
@@ -53,5 +56,7 @@ protected:
                                               std::size_t &h) const override;
 
 private:
-    SDLRenderer *m_renderer = nullptr;
+    Renderer *m_renderer = nullptr;
 };
+
+} // namespace e172::impl::sdl

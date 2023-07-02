@@ -1,22 +1,26 @@
 #pragma once
 
-#include <src/graphics/abstractrenderer.h>
+#include <e172/graphics/abstractrenderer.h>
+#include <e172/math/vector.h>
+#include <e172/utility/priorityprocedure.h>
 #include <map>
-#include <src/math/vector.h>
 #include <queue>
-#include <src/utility/priorityprocedure.h>
 
 struct SDL_Window;
 struct SDL_Surface;
 struct _TTF_Font;
 typedef _TTF_Font TTF_Font;
 
-class SDLRenderer : public e172::AbstractRenderer {
-    friend class SDLGraphicsProvider;
+namespace e172::impl::sdl {
+
+class Renderer : public e172::AbstractRenderer
+{
+    friend class GraphicsProvider;
+
 public:
     static const int DefaultFontSize;
 
-    ~SDLRenderer();
+    ~Renderer();
 
     // AbstractRenderer interface
 public:
@@ -93,7 +97,7 @@ private:
     };
 
 private:
-    SDLRenderer(const std::string &title, const e172::Vector<std::uint32_t> &resolution);
+    Renderer(const std::string &title, const e172::Vector<std::uint32_t> &resolution);
 
     static void applyLensEffect(SDL_Surface *surface,
                                 const e172::Vector<double> point0,
@@ -115,3 +119,5 @@ private:
     std::queue<LensReciept> m_lensQueue;
     e172::PriorityProcedure::Queue m_drawQueue;
 };
+
+} // namespace e172::impl::sdl

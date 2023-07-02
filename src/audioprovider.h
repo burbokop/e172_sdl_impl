@@ -1,17 +1,19 @@
-#ifndef SDLAUDIOPROVIDER_H
-#define SDLAUDIOPROVIDER_H
+#pragma once
+
+#include <e172/audio/abstractaudioprovider.h>
 #include <queue>
 
-#include <src/audio/abstractaudioprovider.h>
+namespace e172::impl::sdl {
 
-class SDLAudioProvider: public e172::AbstractAudioProvider {
+class AudioProvider : public e172::AbstractAudioProvider
+{
     enum { ReserveStep = 10 };
 
     int m_reservedChannelCount = 0;
     int m_currentChannelCount = 0;
     std::queue<int> freeChannel;
 public:
-    SDLAudioProvider();
+    AudioProvider();
 
     // AbstractAudioProvider interface
 public:
@@ -19,4 +21,4 @@ public:
     virtual e172::AudioChannel reserveChannel() override;
 };
 
-#endif // SDLAUDIOPROVIDER_H
+} // namespace e172::impl::sdl

@@ -1,7 +1,8 @@
 #pragma once
 
-#include <SDL2/SDL.h>
-#include <src/math/vector.h>
+#include <e172/math/vector.h>
+
+struct SDL_Surface;
 
 class VisualEffect {
 public:

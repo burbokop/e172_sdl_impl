@@ -1,13 +1,17 @@
-#include "sdlaudioprovider.h"
+#include "audioprovider.h"
 
 #include <SDL2/SDL_mixer.h>
-#include <src/debug.h>
+#include <e172/debug.h>
 
-SDLAudioProvider::SDLAudioProvider() {
+namespace e172::impl::sdl {
+
+AudioProvider::AudioProvider()
+{
     Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
 }
 
-e172::AudioSample SDLAudioProvider::loadAudioSample(const std::string &path) {
+e172::AudioSample AudioProvider::loadAudioSample(const std::string &path)
+{
     if (auto audio = Mix_LoadWAV(path.c_str())) {
         auto handle = new e172::AudioSample::Handle<Mix_Chunk *>(audio);
         return createAudioSample(handle, this, [](e172::AudioSample::DataPtr handle) {
@@ -19,8 +23,8 @@ e172::AudioSample SDLAudioProvider::loadAudioSample(const std::string &path) {
     return e172::AudioSample();
 }
 
-
-e172::AudioChannel SDLAudioProvider::reserveChannel() {
+e172::AudioChannel AudioProvider::reserveChannel()
+{
     m_currentChannelCount++;
     if (m_currentChannelCount > m_reservedChannelCount){
         m_reservedChannelCount = Mix_AllocateChannels(m_reservedChannelCount + ReserveStep);
@@ -67,3 +71,5 @@ e172::AudioChannel SDLAudioProvider::reserveChannel() {
             Mix_Pause(c->c);
         });
 }
+
+} // namespace e172::impl::sdl

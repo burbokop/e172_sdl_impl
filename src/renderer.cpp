@@ -1,16 +1,18 @@
-#include "sdlrenderer.h"
-#include "spm.h"
+#include "renderer.h"
 
-
-#include <src/effects/anaglyph.h>
+#include "effects/anaglyph.h"
+#include "private/spm.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-#include <src/math/math.h>
-#include <src/debug.h>
+#include <e172/debug.h>
+#include <e172/math/math.h>
 
-const int SDLRenderer::DefaultFontSize = 20;
+namespace e172::impl::sdl {
 
-void SDLRenderer::enableEffect(uint64_t effect) {
+const int Renderer::DefaultFontSize = 20;
+
+void Renderer::enableEffect(uint64_t effect)
+{
     (void)effect;
     if(effect == 0) {
         m_anaglyphEnabled = true;
@@ -19,7 +21,8 @@ void SDLRenderer::enableEffect(uint64_t effect) {
     }
 }
 
-void SDLRenderer::disableEffect(uint64_t effect) {
+void Renderer::disableEffect(uint64_t effect)
+{
     (void)effect;
     if(effect == 0) {
         m_anaglyphEnabled = false;
@@ -28,12 +31,13 @@ void SDLRenderer::disableEffect(uint64_t effect) {
     }
 }
 
-SDLRenderer::~SDLRenderer() {
+Renderer::~Renderer()
+{
     SDL_FreeSurface(m_surface);
     SDL_DestroyWindow(m_window);
 }
 
-void SDLRenderer::setResolution(e172::Vector<double> value)
+void Renderer::setResolution(e172::Vector<double> value)
 {
     if (value.x() >= 0 && value.y() >= 0) {
         SDL_SetWindowSize(m_window, value.intX(), value.intY());
@@ -42,9 +46,9 @@ void SDLRenderer::setResolution(e172::Vector<double> value)
     }
 }
 
-void SDLRenderer::applyLensEffect(const e172::Vector<double> &point0,
-                                  const e172::Vector<double> &point1,
-                                  double coefficient)
+void Renderer::applyLensEffect(const e172::Vector<double> &point0,
+                               const e172::Vector<double> &point1,
+                               double coefficient)
 {
     const auto delta = point1 - point0;
     if (delta.x() == 0 || delta.y() == 0 || e172::Math::cmpf(coefficient, 0))
@@ -53,7 +57,7 @@ void SDLRenderer::applyLensEffect(const e172::Vector<double> &point0,
     m_lensQueue.push({ point0, point1, coefficient });
 }
 
-SDLRenderer::SDLRenderer(const std::string &title, const e172::Vector<uint32_t> &resolution)
+Renderer::Renderer(const std::string &title, const e172::Vector<uint32_t> &resolution)
 {
     if (!s_sdlInitialized) {
         SDL_Init(SDL_INIT_EVERYTHING);
@@ -74,10 +78,10 @@ SDLRenderer::SDLRenderer(const std::string &title, const e172::Vector<uint32_t> 
     m_surface = surface;
 }
 
-void SDLRenderer::applyLensEffect(SDL_Surface *surface,
-                                  const e172::Vector<double> point0,
-                                  const e172::Vector<double> point1,
-                                  double coef)
+void Renderer::applyLensEffect(SDL_Surface *surface,
+                               const e172::Vector<double> point0,
+                               const e172::Vector<double> point1,
+                               double coef)
 {
     auto pixels = reinterpret_cast<uint32_t*>(surface->pixels);
 
@@ -104,35 +108,37 @@ void SDLRenderer::applyLensEffect(SDL_Surface *surface,
 
     for (int y = point0.intY(); y < point1.intY(); ++y) {
         for(int x = point0.intX(); x < point1.intX(); ++x) {
-            SPM::FillPixel(surface, x, y, pix[y-point0.intY()][x-point0.intX()]);
+            spm::fillPixel(surface, x, y, pix[y - point0.intY()][x - point0.intX()]);
         }
     }
 }
 
-size_t SDLRenderer::presentEffectCount() const {
+size_t Renderer::presentEffectCount() const
+{
     return 0;
 }
 
-std::string SDLRenderer::presentEffectName(size_t index) const {
+std::string Renderer::presentEffectName(size_t index) const
+{
     return "";
 }
 
-void SDLRenderer::drawEffect(size_t index, const e172::VariantVector &args) {
+void Renderer::drawEffect(size_t index, const e172::VariantVector &args) {}
 
-}
-
-void SDLRenderer::fill(uint32_t color) {
+void Renderer::fill(uint32_t color)
+{
     m_drawQueue.push(m_depth, [this, color]() { SDL_FillRect(m_surface, nullptr, color); });
 }
 
-e172::Vector<double> SDLRenderer::screenSize() const
+e172::Vector<double> Renderer::screenSize() const
 {
     SDL_DisplayMode displayMode;
     SDL_GetCurrentDisplayMode(0, &displayMode);
     return e172::Vector<double>(displayMode.w, displayMode.h);
 }
 
-void SDLRenderer::setFullscreen(bool value) {
+void Renderer::setFullscreen(bool value)
+{
     if(m_lastFullscreen == value)
         return;
 
@@ -155,16 +161,16 @@ void SDLRenderer::setFullscreen(bool value) {
     m_surface = SDL_GetWindowSurface(m_window);
 }
 
-void SDLRenderer::drawPixel(const e172::Vector<double> &point, Uint32 color)
+void Renderer::drawPixel(const e172::Vector<double> &point, Uint32 color)
 {
     m_drawQueue.push(m_depth, [this, point, color]() {
-        SPM::FillPixel(m_surface, point.intX(), point.intY(), color);
+        spm::fillPixel(m_surface, point.intX(), point.intY(), color);
     });
 }
 
-void SDLRenderer::drawLine(const e172::Vector<double> &point0,
-                           const e172::Vector<double> &point1,
-                           Uint32 color)
+void Renderer::drawLine(const e172::Vector<double> &point0,
+                        const e172::Vector<double> &point1,
+                        Uint32 color)
 {
     m_drawQueue.push(m_depth, [this, point0, point1, color]() {
         SDL_LockSurface(m_surface);
@@ -202,20 +208,20 @@ void SDLRenderer::drawLine(const e172::Vector<double> &point0,
                 y1 = k * x1 + b;
             }
         }
-        SPM::Line(m_surface, x0, y0, x1, y1, color);
+        spm::line(m_surface, x0, y0, x1, y1, color);
         SDL_UnlockSurface(m_surface);
     });
 }
 
-void SDLRenderer::drawRect(const e172::Vector<double> &point0,
-                           const e172::Vector<double> &point1,
-                           Uint32 color,
-                           const e172::ShapeFormat &format)
+void Renderer::drawRect(const e172::Vector<double> &point0,
+                        const e172::Vector<double> &point1,
+                        Uint32 color,
+                        const e172::ShapeFormat &format)
 {
     m_drawQueue.push(m_depth, [this, point0, point1, color, format]() {
         SDL_LockSurface(m_surface);
         if(format.fill()) {
-            SPM::WithBlit(SPM::FillArea,
+            spm::withBlit(spm::fillArea,
                           m_surface,
                           point0.intX(),
                           point0.intY(),
@@ -223,38 +229,38 @@ void SDLRenderer::drawRect(const e172::Vector<double> &point0,
                           point1.intY(),
                           color);
         } else {
-            SPM::Rect(m_surface, point0.intX(), point0.intY(), point1.intX(), point1.intY(), color);
+            spm::rect(m_surface, point0.intX(), point0.intY(), point1.intX(), point1.intY(), color);
         }
         SDL_UnlockSurface(m_surface);
     });
 }
 
-void SDLRenderer::drawSquare(const e172::Vector<double> &point, int radius, Uint32 color)
+void Renderer::drawSquare(const e172::Vector<double> &point, int radius, Uint32 color)
 {
     m_drawQueue.push(m_depth, [this, point, radius, color]() {
         SDL_LockSurface(m_surface);
-        SPM::Square(m_surface, point.intX(), point.intY(), radius, color);
+        spm::square(m_surface, point.intX(), point.intY(), radius, color);
         SDL_UnlockSurface(m_surface);
     });
 }
 
-void SDLRenderer::drawCircle(const e172::Vector<double> &point, int radius, Uint32 color)
+void Renderer::drawCircle(const e172::Vector<double> &point, int radius, Uint32 color)
 {
     m_drawQueue.push(m_depth, [this, point, radius, color]() {
         SDL_LockSurface(m_surface);
-        SPM::Circle(m_surface, point.intX(), point.intY(), radius, color);
+        spm::circle(m_surface, point.intX(), point.intY(), radius, color);
         SDL_UnlockSurface(m_surface);
     });
 }
 
-void SDLRenderer::drawDiagonalGrid(const e172::Vector<double> &point1,
-                                   const e172::Vector<double> &point2,
-                                   int interval,
-                                   Uint32 color)
+void Renderer::drawDiagonalGrid(const e172::Vector<double> &point1,
+                                const e172::Vector<double> &point2,
+                                int interval,
+                                Uint32 color)
 {
     m_drawQueue.push(m_depth, [this, point1, point2, interval, color]() {
         SDL_LockSurface(m_surface);
-        SPM::DiagonalGrid(m_surface,
+        spm::diagonalGrid(m_surface,
                           point1.intX(),
                           point1.intY(),
                           point2.intX(),
@@ -265,10 +271,10 @@ void SDLRenderer::drawDiagonalGrid(const e172::Vector<double> &point1,
     });
 }
 
-void SDLRenderer::drawImage(const e172::Image &image,
-                            const e172::Vector<double> &pos,
-                            double angle,
-                            double zoom)
+void Renderer::drawImage(const e172::Image &image,
+                         const e172::Vector<double> &pos,
+                         double angle,
+                         double zoom)
 {
     m_drawQueue.push(m_depth, [this, image, pos, angle, zoom](){
         if(imageProvider(image) == provider()) {
@@ -277,7 +283,7 @@ void SDLRenderer::drawImage(const e172::Image &image,
                 effect = new Anaglyph(e172::Vector(2, 1));
 
             auto image_surface = imageData<SDL_Surface*>(image);
-            SPM::BlitRotatedSurface(image_surface,
+            spm::blitRotatedSurface(image_surface,
                                     m_surface,
                                     pos.intX(),
                                     pos.intY(),
@@ -290,10 +296,10 @@ void SDLRenderer::drawImage(const e172::Image &image,
     });
 }
 
-e172::Vector<double> SDLRenderer::drawString(const std::string &string,
-                                             const e172::Vector<double> &pos,
-                                             uint32_t color,
-                                             const e172::TextFormat &format)
+e172::Vector<double> Renderer::drawString(const std::string &string,
+                                          const e172::Vector<double> &pos,
+                                          uint32_t color,
+                                          const e172::TextFormat &format)
 {
     int expectedSize = DefaultFontSize;
     if(format.fontSize() > 0) {
@@ -329,7 +335,7 @@ e172::Vector<double> SDLRenderer::drawString(const std::string &string,
             offsetY = -h / 2;
         }
         m_drawQueue.push(m_depth, [this, string, f, pos, offsetX, offsetY, effect, color]() {
-            SPM::BlendedText(m_surface,
+            spm::blendedText(m_surface,
                              string,
                              f,
                              pos.intX() + offsetX,
@@ -344,7 +350,7 @@ e172::Vector<double> SDLRenderer::drawString(const std::string &string,
     return e172::Vector<double>();
 }
 
-void SDLRenderer::modifyBitmap(const std::function<void(e172::Color *)> &modifier)
+void Renderer::modifyBitmap(const std::function<void(e172::Color *)> &modifier)
 {
     m_drawQueue.push(m_depth, [this, modifier]() {
         SDL_LockSurface(m_surface);
@@ -353,7 +359,8 @@ void SDLRenderer::modifyBitmap(const std::function<void(e172::Color *)> &modifie
     });
 }
 
-bool SDLRenderer::update() {
+bool Renderer::update()
+{
     m_drawQueue.exec();
 
     while (m_lensQueue.size() > 0) {
@@ -366,27 +373,32 @@ bool SDLRenderer::update() {
     return true;
 }
 
-
-void SDLRenderer::applySmooth(const e172::Vector<double> &point0, const e172::Vector<double> &point1, double coefficient) {
+void Renderer::applySmooth(const e172::Vector<double> &point0,
+                           const e172::Vector<double> &point1,
+                           double coefficient)
+{
     uint32_t pix[point1.intY()-point0.intY()][point1.intX()-point0.intX()];
     for(int y = point0.intY(); y < point1.intY(); ++y) {
         for(int x = point0.intX(); x < point1.intX(); ++x) {
             pix[y - point0.intY()][x - point0.intX()]
-                = (SPM::GetPixel(m_surface, static_cast<int>(x + coefficient), y)
-                   + SPM::GetPixel(m_surface, static_cast<int>(x - coefficient), y)
-                   + SPM::GetPixel(m_surface, x, static_cast<int>(y + coefficient))
-                   + SPM::GetPixel(m_surface, x, static_cast<int>(y - coefficient)))
+                = (spm::pixelAt(m_surface, static_cast<int>(x + coefficient), y)
+                   + spm::pixelAt(m_surface, static_cast<int>(x - coefficient), y)
+                   + spm::pixelAt(m_surface, x, static_cast<int>(y + coefficient))
+                   + spm::pixelAt(m_surface, x, static_cast<int>(y - coefficient)))
                   / 4;
         }
     }
 
     for(int y = point0.intY(); y < point1.intY(); ++y) {
         for(int x = point0.intX(); x < point1.intX(); ++x) {
-            SPM::FillPixel(m_surface, x, y, pix[y - point0.intY()][x - point0.intX()]);
+            spm::fillPixel(m_surface, x, y, pix[y - point0.intY()][x - point0.intX()]);
         }
     }
 }
 
-void SDLRenderer::setDepth(int64_t depth) {
+void Renderer::setDepth(int64_t depth)
+{
     m_depth = depth;
 }
+
+} // namespace e172::impl::sdl

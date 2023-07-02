@@ -1,5 +1,6 @@
 #include "anaglyph.h"
 
+#include <SDL2/SDL_surface.h>
 #include <cassert>
 
 SDL_Surface *separateChannel(SDL_Surface *origin, Uint32 mask) {

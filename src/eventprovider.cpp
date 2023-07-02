@@ -1,6 +1,8 @@
-#include "sdleventprovider.h"
+#include "eventprovider.h"
 
 #include <SDL2/SDL.h>
+
+namespace e172::impl::sdl {
 
 namespace {
 e172::Scancode scancodeFromSDL(SDL_Scancode s)
@@ -505,9 +507,10 @@ e172::Scancode scancodeFromSDL(SDL_Scancode s)
     }
     return e172::ScancodeUnknown;
 }
+
 } // namespace
 
-std::optional<e172::Event> SDLEventProvider::pullEvent()
+std::optional<e172::Event> EventProvider::pullEvent()
 {
     SDL_Event event;
     if (SDL_PollEvent(&event)) {
@@ -523,3 +526,5 @@ std::optional<e172::Event> SDLEventProvider::pullEvent()
     }
     return std::nullopt;
 }
+
+} // namespace e172::impl::sdl

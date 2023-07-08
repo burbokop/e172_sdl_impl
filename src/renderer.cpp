@@ -118,12 +118,12 @@ size_t Renderer::presentEffectCount() const
     return 0;
 }
 
-std::string Renderer::presentEffectName(size_t index) const
+std::string Renderer::presentEffectName(std::size_t) const
 {
     return "";
 }
 
-void Renderer::drawEffect(size_t index, const e172::VariantVector &args) {}
+void Renderer::drawEffect(std::size_t, const e172::VariantVector &) {}
 
 void Renderer::fill(uint32_t color)
 {

@@ -1,6 +1,7 @@
 #include "renderer.h"
 
 #include "effects/anaglyph.h"
+#include "graphicsprovider.h"
 #include "private/spm.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -37,13 +38,14 @@ Renderer::~Renderer()
     SDL_DestroyWindow(m_window);
 }
 
-void Renderer::setResolution(e172::Vector<double> value)
+void Renderer::setResolution(const e172::Vector<uint32_t> &value)
 {
-    if (value.x() >= 0 && value.y() >= 0) {
-        SDL_SetWindowSize(m_window, value.intX(), value.intY());
-        m_surface = SDL_GetWindowSurface(m_window);
-        m_resolution = value.into<uint32_t>();
+    SDL_SetWindowSize(m_window, value.x(), value.y());
+    if (m_surface) {
+        SDL_FreeSurface(m_surface);
     }
+    m_surface = SDL_GetWindowSurface(m_window);
+    m_resolution = value.into<std::uint32_t>();
 }
 
 void Renderer::applyLensEffect(const e172::Vector<double> &point0,
@@ -57,13 +59,8 @@ void Renderer::applyLensEffect(const e172::Vector<double> &point0,
     m_lensQueue.push({ point0, point1, coefficient });
 }
 
-Renderer::Renderer(const std::string &title, const e172::Vector<uint32_t> &resolution)
+Renderer::Renderer(Private, const std::string &title, const e172::Vector<uint32_t> &resolution)
 {
-    if (!s_sdlInitialized) {
-        SDL_Init(SDL_INIT_EVERYTHING);
-        TTF_Init();
-        s_sdlInitialized = true;
-    }
     SDL_Window *window = SDL_CreateWindow(title.c_str(),
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
@@ -125,16 +122,9 @@ std::string Renderer::presentEffectName(std::size_t) const
 
 void Renderer::drawEffect(std::size_t, const e172::VariantVector &) {}
 
-void Renderer::fill(uint32_t color)
+void Renderer::fill(Color color)
 {
     m_drawQueue.push(m_depth, [this, color]() { SDL_FillRect(m_surface, nullptr, color); });
-}
-
-e172::Vector<double> Renderer::screenSize() const
-{
-    SDL_DisplayMode displayMode;
-    SDL_GetCurrentDisplayMode(0, &displayMode);
-    return e172::Vector<double>(displayMode.w, displayMode.h);
 }
 
 void Renderer::setFullscreen(bool value)
@@ -147,7 +137,9 @@ void Renderer::setFullscreen(bool value)
     if(value) {
         SDL_DisplayMode displayMode;
         SDL_GetCurrentDisplayMode(0, &displayMode);
-        setResolution(e172::Vector<double>(displayMode.w, displayMode.h));
+        assert(displayMode.w >= 0);
+        assert(displayMode.h >= 0);
+        setResolution(e172::Vector<std::uint32_t>(displayMode.w, displayMode.h));
 
         SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN);
         SDL_ShowCursor(false);
@@ -235,7 +227,7 @@ void Renderer::drawRect(const e172::Vector<double> &point0,
     });
 }
 
-void Renderer::drawSquare(const e172::Vector<double> &point, int radius, Uint32 color)
+void Renderer::drawSquare(const e172::Vector<double> &point, double radius, Color color)
 {
     m_drawQueue.push(m_depth, [this, point, radius, color]() {
         SDL_LockSurface(m_surface);
@@ -244,7 +236,7 @@ void Renderer::drawSquare(const e172::Vector<double> &point, int radius, Uint32 
     });
 }
 
-void Renderer::drawCircle(const e172::Vector<double> &point, int radius, Uint32 color)
+void Renderer::drawCircle(const e172::Vector<double> &point, double radius, Color color)
 {
     m_drawQueue.push(m_depth, [this, point, radius, color]() {
         SDL_LockSurface(m_surface);
@@ -255,8 +247,8 @@ void Renderer::drawCircle(const e172::Vector<double> &point, int radius, Uint32 
 
 void Renderer::drawDiagonalGrid(const e172::Vector<double> &point1,
                                 const e172::Vector<double> &point2,
-                                int interval,
-                                Uint32 color)
+                                double interval,
+                                Color color)
 {
     m_drawQueue.push(m_depth, [this, point1, point2, interval, color]() {
         SDL_LockSurface(m_surface);
@@ -272,11 +264,11 @@ void Renderer::drawDiagonalGrid(const e172::Vector<double> &point1,
 }
 
 void Renderer::drawImage(const e172::Image &image,
-                         const e172::Vector<double> &pos,
+                         const e172::Vector<double> &center,
                          double angle,
                          double zoom)
 {
-    m_drawQueue.push(m_depth, [this, image, pos, angle, zoom](){
+    m_drawQueue.push(m_depth, [this, image, center, angle, zoom]() {
         if(imageProvider(image) == provider()) {
             VisualEffect *effect = nullptr;
             if (m_anaglyphEnabled || m_anaglyphEnabled2)
@@ -285,8 +277,8 @@ void Renderer::drawImage(const e172::Image &image,
             auto image_surface = imageData<SDL_Surface*>(image);
             spm::blitRotatedSurface(image_surface,
                                     m_surface,
-                                    pos.intX(),
-                                    pos.intY(),
+                                    center.intX(),
+                                    center.intY(),
                                     angle,
                                     zoom,
                                     1,
@@ -298,7 +290,7 @@ void Renderer::drawImage(const e172::Image &image,
 
 e172::Vector<double> Renderer::drawString(const std::string &string,
                                           const e172::Vector<double> &pos,
-                                          uint32_t color,
+                                          Color color,
                                           const e172::TextFormat &format)
 {
     int expectedSize = DefaultFontSize;
@@ -306,8 +298,11 @@ e172::Vector<double> Renderer::drawString(const std::string &string,
         expectedSize = format.fontSize();
     }
 
-    const auto font = m_fonts.find(format.font());
-    if(font != m_fonts.end()) {    
+    const auto prov = const_cast<GraphicsProvider *>(
+        dynamic_cast<const GraphicsProvider *>(provider()));
+
+    const auto font = prov->m_fonts.find(format.font());
+    if (font != prov->m_fonts.end()) {
         TTF_Font *f = nullptr;
         const auto s = font->second.sizes.find(expectedSize);
         if(s != font->second.sizes.end()) {

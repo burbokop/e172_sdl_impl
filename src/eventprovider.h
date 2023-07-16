@@ -9,7 +9,7 @@ namespace e172::impl::sdl {
 class EventProvider : public e172::AbstractEventProvider
 {
 public:
-    EventProvider() = default;
+    EventProvider();
 
     // AbstractEventHandler interface
 public:

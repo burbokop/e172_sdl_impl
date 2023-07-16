@@ -1,5 +1,6 @@
 #include "eventprovider.h"
 
+#include "private/initsdl.h"
 #include <SDL2/SDL.h>
 
 namespace e172::impl::sdl {
@@ -509,6 +510,11 @@ e172::Scancode scancodeFromSDL(SDL_Scancode s)
 }
 
 } // namespace
+
+EventProvider::EventProvider()
+{
+    initSDL();
+}
 
 std::optional<e172::Event> EventProvider::pullEvent()
 {

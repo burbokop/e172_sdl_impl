@@ -1,5 +1,6 @@
 #include "audioprovider.h"
 
+#include "private/initsdl.h"
 #include <SDL2/SDL_mixer.h>
 #include <e172/debug.h>
 
@@ -7,6 +8,7 @@ namespace e172::impl::sdl {
 
 AudioProvider::AudioProvider()
 {
+    initSDL();
     Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
 }
 

@@ -1,22 +1,22 @@
 #include "graphicsprovider.h"
 
+#include "private/initsdl.h"
 #include "private/spm.h"
 #include <SDL2/SDL_image.h>
 
 namespace e172::impl::sdl {
 
-GraphicsProvider::GraphicsProvider(const std::vector<std::string> &args,
-                                   const std::string &title,
-                                   const e172::Vector<uint32_t> &resolution)
-    : e172::AbstractGraphicsProvider(args)
+GraphicsProvider::GraphicsProvider()
 {
-    m_renderer = new Renderer(title, resolution);
-    installParentToRenderer(m_renderer);
+    initSDL();
 }
 
-GraphicsProvider::~GraphicsProvider()
+std::shared_ptr<AbstractRenderer> GraphicsProvider::createRenderer(
+    const std::string &title, const e172::Vector<uint32_t> &resolution) const
 {
-    delete m_renderer;
+    const auto renderer = std::make_shared<Renderer>(Renderer::Private{}, title, resolution);
+    installParentToRenderer(*renderer);
+    return renderer;
 }
 
 e172::Image GraphicsProvider::imageFromSDLSurface(SDL_Surface *surface) const
@@ -29,32 +29,26 @@ e172::Image GraphicsProvider::imageFromSDLSurface(SDL_Surface *surface) const
     return e172::Image();
 }
 
-e172::AbstractRenderer *GraphicsProvider::renderer() const
-{
-    return m_renderer;
-}
-
-bool GraphicsProvider::isValid() const
-{
-    return true;
-}
-
 e172::Image GraphicsProvider::loadImage(const std::string &path) const
 {
     return imageFromSDLSurface(IMG_Load(path.c_str()));
 }
 
-e172::Image GraphicsProvider::createImage(int width, int height) const
+e172::Image GraphicsProvider::createImage(std::size_t width, std::size_t height) const
 {
+    assert(width <= std::numeric_limits<int>::max());
+    assert(height <= std::numeric_limits<int>::max());
     return imageFromSDLSurface(SDL_CreateRGBSurface(0, width, height, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000));
 }
 
-e172::Image GraphicsProvider::createImage(
-    int width,
-    int height,
+e172::Image GraphicsProvider::createImage(std::size_t width,
+    std::size_t height,
     const e172::AbstractGraphicsProvider::ImageInitFunction &imageInitFunction) const
 {
-    SDL_Surface* surface = SDL_CreateRGBSurface(0, width, height, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+    assert(width <= std::numeric_limits<int>::max());
+    assert(height <= std::numeric_limits<int>::max());
+    SDL_Surface *surface
+        = SDL_CreateRGBSurface(0, width, height, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
     if(surface) {
         imageInitFunction(reinterpret_cast<uint32_t*>(surface->pixels));
         return imageFromSDLSurface(surface);
@@ -62,12 +56,14 @@ e172::Image GraphicsProvider::createImage(
     return e172::Image();
 }
 
-e172::Image GraphicsProvider::createImage(
-    int width,
-    int height,
+e172::Image GraphicsProvider::createImage(std::size_t width,
+    std::size_t height,
     const e172::AbstractGraphicsProvider::ImageInitFunctionExt &imageInitFunction) const
 {
-    SDL_Surface* surface = SDL_CreateRGBSurface(0, width, height, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+    assert(width <= std::numeric_limits<int>::max());
+    assert(height <= std::numeric_limits<int>::max());
+    SDL_Surface *surface
+        = SDL_CreateRGBSurface(0, width, height, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
     if(surface) {
         imageInitFunction(width, height, reinterpret_cast<uint32_t*>(surface->pixels));
         return imageFromSDLSurface(surface);
@@ -75,14 +71,23 @@ e172::Image GraphicsProvider::createImage(
     return e172::Image();
 }
 
-void GraphicsProvider::loadFont(const std::string &name, const std::string &path)
+void GraphicsProvider::loadFont(const std::string &name, const std::filesystem::__cxx11::path &path)
 {
-    m_renderer->m_fonts[name] = Renderer::Font{path, std::map<int, TTF_Font *>()};
+    m_fonts[name] = Font{path, std::map<int, TTF_Font *>()};
 }
 
 bool GraphicsProvider::fontLoaded(const std::string &name) const
 {
-    return m_renderer->m_fonts.find(name) != m_renderer->m_fonts.end();
+    return m_fonts.find(name) != m_fonts.end();
+}
+
+e172::Vector<uint32_t> GraphicsProvider::screenSize() const
+{
+    SDL_DisplayMode displayMode;
+    SDL_GetCurrentDisplayMode(0, &displayMode);
+    assert(displayMode.w >= 0);
+    assert(displayMode.h >= 0);
+    return e172::Vector<std::uint32_t>(displayMode.w, displayMode.h);
 }
 
 void GraphicsProvider::destructImage(e172::SharedContainer::DataPtr ptr) const
@@ -124,8 +129,8 @@ bool GraphicsProvider::saveImage(e172::SharedContainer::DataPtr ptr, const std::
 
 e172::SharedContainer::DataPtr GraphicsProvider::blitImages(e172::SharedContainer::DataPtr ptr0,
                                                             e172::SharedContainer::DataPtr ptr1,
-                                                            int x,
-                                                            int y,
+                                                            std::ptrdiff_t x,
+                                                            std::ptrdiff_t y,
                                                             std::size_t &w,
                                                             std::size_t &h) const
 {
@@ -141,6 +146,8 @@ e172::SharedContainer::DataPtr GraphicsProvider::blitImages(e172::SharedContaine
     resultRect.y = y;
     SDL_BlitSurface(handle1->c, nullptr, result, &resultRect);
 
+    assert(result->w >= 0);
+    assert(result->h >= 0);
     w = result->w;
     h = result->h;
 

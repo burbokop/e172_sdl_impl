@@ -318,22 +318,23 @@ void diagonalGrid(SDL_Surface *surface,
              color);
     }
     SDL_BlitSurface(canvas, nullptr, surface, new SDL_Rect { point1_x, point1_y, 0, 0 });
+    SDL_FreeSurface(canvas);
 }
 
 void blitRotatedSurface(SDL_Surface *surface,
                         SDL_Surface *screen_surface,
-                        int x,
-                        int y,
+                        int centerX,
+                        int centerY,
                         double angle,
                         double zoom,
                         int smooth,
                         VisualEffect *effect)
 {
     SDL_Surface *temp_surface = nullptr;
-    SDL_Rect rect = {
-        static_cast<int>(x - surface->w * zoom / 2),
-        static_cast<int>(y - surface->h * zoom / 2), 0, 0
-    };
+    SDL_Rect rect = {static_cast<int>(centerX - surface->w * zoom / 2),
+                     static_cast<int>(centerY - surface->h * zoom / 2),
+                     0,
+                     0};
     angle = angle * RADS_MULTIPLIER;
     temp_surface = rotozoomSurface(surface, angle, zoom, smooth);
     rect.x = static_cast<int>(rect.x - temp_surface->w / 2 + surface->w * zoom / 2);

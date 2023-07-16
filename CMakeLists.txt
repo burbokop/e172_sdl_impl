@@ -53,7 +53,9 @@ target_sources(
           ${CMAKE_CURRENT_LIST_DIR}/src/private/rotozoom.cpp
           ${CMAKE_CURRENT_LIST_DIR}/src/private/rotozoom.h
           ${CMAKE_CURRENT_LIST_DIR}/src/private/spm.cpp
-          ${CMAKE_CURRENT_LIST_DIR}/src/private/spm.h)
+          ${CMAKE_CURRENT_LIST_DIR}/src/private/spm.h
+          ${CMAKE_CURRENT_LIST_DIR}/src/private/initsdl.h
+          ${CMAKE_CURRENT_LIST_DIR}/src/private/initsdl.cpp)
 
 if(ENABLE_FIND_E172_PACKAGE)
   find_package(e172 REQUIRED)

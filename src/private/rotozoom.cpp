@@ -1,3 +1,5 @@
+// NOLINTBEGIN
+// clang-format off
 
 /*
 
@@ -1662,3 +1664,6 @@ exitShrinkSurface:
         */
         return (rz_dst);
 }
+
+// clang-format on
+// NOLINTEND

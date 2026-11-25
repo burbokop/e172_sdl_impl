@@ -1,8 +1,11 @@
+// Copyright 2023 Borys Boiko
+
 #include "audioprovider.h"
 
 #include "private/initsdl.h"
 #include <SDL2/SDL_mixer.h>
 #include <e172/debug.h>
+#include <string>
 
 namespace e172::impl::sdl {
 
@@ -12,12 +15,12 @@ AudioProvider::AudioProvider()
     Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
 }
 
-e172::AudioSample AudioProvider::loadAudioSample(const std::string &path)
+e172::AudioSample AudioProvider::loadAudioSample(const std::string& path)
 {
     if (auto audio = Mix_LoadWAV(path.c_str())) {
-        auto handle = new e172::AudioSample::Handle<Mix_Chunk *>(audio);
+        auto handle = new e172::AudioSample::Handle<Mix_Chunk*>(audio);
         return createAudioSample(handle, this, [](e172::AudioSample::DataPtr handle) {
-            auto h = e172::AudioSample::castHandle<Mix_Chunk *>(handle);
+            auto h = e172::AudioSample::castHandle<Mix_Chunk*>(handle);
             Mix_FreeChunk(h->c);
             delete h;
         });
@@ -28,18 +31,19 @@ e172::AudioSample AudioProvider::loadAudioSample(const std::string &path)
 e172::AudioChannel AudioProvider::reserveChannel()
 {
     m_currentChannelCount++;
-    if (m_currentChannelCount > m_reservedChannelCount){
+    if (m_currentChannelCount > m_reservedChannelCount) {
         m_reservedChannelCount = Mix_AllocateChannels(m_reservedChannelCount + ReserveStep);
-        if (m_currentChannelCount > m_reservedChannelCount){
-            e172::Debug::warning("Audio channel can not be created, created:",
-                                 m_reservedChannelCount,
-                                 "required:",
-                                 m_currentChannelCount);
+        if (m_currentChannelCount > m_reservedChannelCount) {
+            e172::Debug::warning(
+                "Audio channel can not be created, created:",
+                m_reservedChannelCount,
+                "required:",
+                m_currentChannelCount);
         }
     }
 
     int channel = 0;
-    if (freeChannel.size() > 0){
+    if (freeChannel.size() > 0) {
         channel = freeChannel.front();
         freeChannel.pop();
     } else {
@@ -59,9 +63,9 @@ e172::AudioChannel AudioProvider::reserveChannel()
             auto c = e172::AudioChannel::castHandle<int>(data);
             Mix_Volume(c->c, static_cast<int>(MIX_MAX_VOLUME * volume * generalVolume()));
         },
-        [](e172::AudioChannel::DataPtr data, const e172::AudioSample &sample, int loops) {
+        [](e172::AudioChannel::DataPtr data, const e172::AudioSample& sample, int loops) {
             const auto c = e172::AudioChannel::castHandle<int>(data);
-            const auto s = audioSampleData<Mix_Chunk *>(sample);
+            const auto s = audioSampleData<Mix_Chunk*>(sample);
             Mix_PlayChannelTimed(c->c, s, loops - 1, -1);
         },
         [](e172::AudioChannel::DataPtr data) {

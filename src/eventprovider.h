@@ -1,3 +1,5 @@
+// Copyright 2023 Borys Boiko
+
 #pragma once
 
 #include <e172/abstracteventprovider.h>
@@ -6,8 +8,7 @@ union SDL_Event;
 
 namespace e172::impl::sdl {
 
-class EventProvider : public e172::AbstractEventProvider
-{
+class EventProvider : public e172::AbstractEventProvider {
 public:
     EventProvider();
 

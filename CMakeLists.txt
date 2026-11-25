@@ -65,8 +65,18 @@ if($ENV{WITH_MAGURA})
   find_package(magura REQUIRED)
   target_connect_magura(${PROJECT_NAME})
 else($ENV{WITH_MAGURA})
-  target_link_libraries(${PROJECT_NAME} PRIVATE SDL2 SDL2_image SDL2_ttf
-                                                SDL2_mixer)
+  find_package(SDL2 CONFIG REQUIRED)
+  find_package(SDL2_image CONFIG REQUIRED)
+  find_package(SDL2_mixer CONFIG REQUIRED)
+  find_package(SDL2_ttf CONFIG REQUIRED)
+
+  target_link_libraries(${PROJECT_NAME} PRIVATE
+    $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
+    $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
+    $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>
+    $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,SDL2_mixer::SDL2_mixer,SDL2_mixer::SDL2_mixer-static>
+    $<IF:$<TARGET_EXISTS:SDL2_ttf::SDL2_ttf>,SDL2_ttf::SDL2_ttf,SDL2_ttf::SDL2_ttf-static>
+  )
 endif($ENV{WITH_MAGURA})
 
 if(ENABLE_FIND_E172_PACKAGE)

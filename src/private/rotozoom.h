@@ -1,6 +1,9 @@
-#ifndef ROTOZOOM_H
-#define ROTOZOOM_H
+// Copyright (C) 2012-2014  Andreas Schiffler
 
+#pragma once
+
+// NOLINTBEGIN
+// clang-format off
 
 /*
 
@@ -121,5 +124,5 @@ extern "C" {
 }
 #endif
 
-
-#endif // ROTOZOOM_H
+// clang-format on
+// NOLINTEND

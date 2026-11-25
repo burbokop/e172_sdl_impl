@@ -1,3 +1,5 @@
+// Copyright 2023 Borys Boiko
+
 #pragma once
 
 #include "visualeffect.h"
@@ -8,9 +10,10 @@ public:
     Anaglyph() = default;
     Anaglyph(e172::Vector<int32_t> offset)
         : VisualEffect(offset)
-    {}
+    {
+    }
 
     // VisualEffect interface
 public:
-    SDL_Surface *operator()(SDL_Surface *input);
+    SDL_Surface* operator()(SDL_Surface* input);
 };

@@ -1,3 +1,5 @@
+// Copyright 2023 Borys Boiko
+
 #include "initsdl.h"
 
 #include <SDL2/SDL_ttf.h>

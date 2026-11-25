@@ -1,3 +1,5 @@
+// Copyright 2023 Borys Boiko
+
 #include "eventprovider.h"
 
 #include "private/initsdl.h"
@@ -495,6 +497,7 @@ e172::Scancode scancodeFromSDL(SDL_Scancode s)
         return e172::ScancodeAudioRewind;
     case SDL_SCANCODE_AUDIOFASTFORWARD:
         return e172::ScancodeAudioFastForward;
+#if SDL_VERSION_ATLEAST(2, 24, 0)
     case SDL_SCANCODE_SOFTLEFT:
         return e172::ScancodeSoftLeft;
     case SDL_SCANCODE_SOFTRIGHT:
@@ -503,6 +506,7 @@ e172::Scancode scancodeFromSDL(SDL_Scancode s)
         return e172::ScancodeCall;
     case SDL_SCANCODE_ENDCALL:
         return e172::ScancodeEndCall;
+#endif
     case SDL_NUM_SCANCODES:
         return e172::ScancodesCount;
     }
@@ -511,10 +515,7 @@ e172::Scancode scancodeFromSDL(SDL_Scancode s)
 
 } // namespace
 
-EventProvider::EventProvider()
-{
-    initSDL();
-}
+EventProvider::EventProvider() { initSDL(); }
 
 std::optional<e172::Event> EventProvider::pullEvent()
 {
